@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Container } from "@/components/layout/Container";
 
 interface TrustBarProps {
@@ -15,14 +14,17 @@ export function TrustBar({ items }: TrustBarProps) {
   return (
     <div className="border-b border-gray-200 bg-ivory">
       <Container>
-        <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 py-4 text-center font-sans text-sm tracking-wide text-gray-500">
+        <ul className="flex flex-wrap items-center justify-center gap-y-2 py-4 text-center font-sans text-sm tracking-wide text-gray-500">
           {items.map((item, i) => (
-            <Fragment key={item}>
+            <li key={item} className="flex items-center">
               {i > 0 && (
-                <li aria-hidden="true" className="h-3 w-px bg-gold/40" />
+                <span
+                  aria-hidden="true"
+                  className="mx-4 h-3 w-px bg-gold/40"
+                />
               )}
-              <li>{item}</li>
-            </Fragment>
+              <span>{item}</span>
+            </li>
           ))}
         </ul>
       </Container>

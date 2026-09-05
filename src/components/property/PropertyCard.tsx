@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { PropertySummary, PropertyType } from "@/lib/sanity/types";
 import { formatArea, formatPrice } from "@/lib/format";
+import { ImagelessPanel } from "@/components/ui/ImagelessPanel";
 
 const TYPE_LABEL: Record<PropertyType, string> = {
   house: "House",
@@ -32,26 +33,6 @@ function metaChips(property: PropertySummary): string[] {
     chips.push(`${property.bedrooms} Bed`);
   }
   return chips.filter((c): c is string => Boolean(c)).slice(0, 3);
-}
-
-/**
- * The imageless media panel: an ink field with the label set in Fraunces,
- * a faint ground line and a fine gold corner L — echoes the hero elevation
- * so an empty catalogue still looks composed, never broken.
- */
-function ImagelessPanel({ label }: { label: string }) {
-  return (
-    <div className="relative flex h-full items-center justify-center bg-ink px-6 text-center">
-      <span className="font-display text-2xl leading-tight text-ivory">
-        {label}
-      </span>
-      <span aria-hidden="true">
-        <span className="absolute inset-x-5 bottom-6 h-px bg-gold/15" />
-        <span className="absolute bottom-4 right-4 h-8 w-px bg-gold/70" />
-        <span className="absolute bottom-4 right-4 h-px w-8 bg-gold/70" />
-      </span>
-    </div>
-  );
 }
 
 interface PropertyCardProps {

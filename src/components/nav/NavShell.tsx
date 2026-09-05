@@ -79,7 +79,7 @@ export function NavShell({ links, phones, whatsappHref, callHref }: NavShellProp
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
+          <nav className="hidden items-center gap-7 xl:flex" aria-label="Primary">
             {links.map((link) => {
               const active = isActive(link.href, pathname);
               return (
@@ -107,17 +107,23 @@ export function NavShell({ links, phones, whatsappHref, callHref }: NavShellProp
             })}
           </nav>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-3 xl:flex">
             <Button
               as="a"
               href={whatsappHref}
               variant="solid"
               target="_blank"
               rel="noopener noreferrer"
+              className="whitespace-nowrap"
             >
               WhatsApp Us
             </Button>
-            <Button as="a" href={callHref} variant="outline">
+            <Button
+              as="a"
+              href={callHref}
+              variant="outline"
+              className="whitespace-nowrap"
+            >
               Call Now
             </Button>
           </div>
@@ -128,7 +134,7 @@ export function NavShell({ links, phones, whatsappHref, callHref }: NavShellProp
             aria-label="Open menu"
             aria-expanded={menuOpen}
             aria-haspopup="dialog"
-            className="flex h-10 w-10 items-center justify-center rounded-[6px] border border-gray-200 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory lg:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-[6px] border border-gray-200 text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory xl:hidden"
           >
             <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
               <path d="M0 1h18M0 6h18M0 11h18" stroke="currentColor" strokeWidth="1.5" />

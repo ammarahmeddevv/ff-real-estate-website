@@ -98,9 +98,12 @@ export function HeroInquiryPanel({ phone }: HeroInquiryPanelProps) {
   });
 
   return (
-    <div className="rounded-[8px] border border-gray-200 bg-paper p-6 text-ink shadow-[0_18px_40px_-24px_rgba(17,17,19,0.45)] sm:p-7">
+    <div
+      className="rounded-[8px] border border-gray-200 bg-paper p-6 text-ink shadow-[0_18px_40px_-24px_rgba(17,17,19,0.45)] sm:p-7"
+      aria-live="polite"
+    >
       {status === "done" ? (
-        <div aria-live="polite">
+        <div>
           <h2 className="font-display text-xl leading-snug">Thank you</h2>
           <p className="mt-3 text-sm leading-relaxed text-gray-500">
             F.F Real Estate will be in touch shortly. You can also reach us now

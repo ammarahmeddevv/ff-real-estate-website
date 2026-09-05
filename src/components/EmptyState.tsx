@@ -12,7 +12,7 @@ interface EmptyStateProps {
 export function EmptyState({ title, body, ctaHref, ctaLabel }: EmptyStateProps) {
   return (
     <div className="mx-auto max-w-xl rounded-lg border border-gray-200 bg-paper px-8 py-14 text-center">
-      <MicroLabel as="p">Nothing here yet</MicroLabel>
+      <MicroLabel as="p">Coming soon</MicroLabel>
       <h3 className="mt-3 font-display text-2xl">{title}</h3>
       <p className="mt-3 text-sm leading-relaxed text-gray-500">{body}</p>
       {ctaHref && ctaLabel && (

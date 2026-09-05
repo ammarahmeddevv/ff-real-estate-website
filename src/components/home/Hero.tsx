@@ -29,19 +29,19 @@ export function Hero({ settings }: HeroProps) {
 
   return (
     <section className="relative isolate overflow-hidden bg-ink text-ivory">
-      <HeroElevation className="pointer-events-none absolute -top-16 right-[-4%] hidden h-[135%] w-[58%] text-gold opacity-[0.2] lg:block" />
-      <HeroElevation className="pointer-events-none absolute inset-0 h-full w-full text-gold opacity-[0.08] lg:hidden" />
+      <HeroElevation className="pointer-events-none absolute -top-16 right-[-7%] hidden h-[128%] w-[52%] text-gold opacity-[0.16] md:block lg:right-[-4%] lg:w-[56%] lg:opacity-[0.18]" />
 
       <Container className="relative">
         <div className="grid min-h-[72vh] items-center gap-12 py-16 md:min-h-[86vh] md:py-24 lg:grid-cols-[1fr_minmax(340px,380px)] lg:items-center lg:gap-14 lg:py-24">
           <div className="max-w-xl">
-            <Reveal>
+            <Reveal immediate>
               <MicroLabel className="!text-gold">
                 F.B Area &middot; Dastagir &middot; Karachi
               </MicroLabel>
             </Reveal>
 
             <Reveal
+              immediate
               as="h1"
               delay={0.08}
               className="mt-5 font-display text-4xl leading-[1.05] [text-wrap:balance] md:text-6xl lg:text-7xl"
@@ -49,11 +49,12 @@ export function Hero({ settings }: HeroProps) {
               {hero.heading}
             </Reveal>
 
-            <Reveal delay={0.16} className="mt-6">
+            <Reveal immediate delay={0.16} className="mt-6">
               <span className="block h-px w-16 bg-gold" />
             </Reveal>
 
             <Reveal
+              immediate
               as="p"
               delay={0.24}
               className="mt-6 max-w-xl text-base text-ivory/75 md:text-lg"
@@ -62,18 +63,31 @@ export function Hero({ settings }: HeroProps) {
             </Reveal>
 
             <Reveal
+              immediate
               delay={0.32}
-              className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
+              className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center"
             >
-              <Button as="a" href="/properties" tone="dark" variant="solid">
+              <Button
+                as="a"
+                href="/properties"
+                tone="dark"
+                variant="solid"
+                className="w-full sm:w-auto"
+              >
                 Explore Properties
               </Button>
-              <Button as="a" href="/contact" tone="dark" variant="outline">
+              <Button
+                as="a"
+                href="/contact"
+                tone="dark"
+                variant="outline"
+                className="w-full sm:w-auto"
+              >
                 Talk to an Agent
               </Button>
             </Reveal>
 
-            <Reveal delay={0.4}>
+            <Reveal immediate delay={0.4}>
               <a
                 href={whatsappHref}
                 target="_blank"

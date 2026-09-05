@@ -1,28 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ProjectStatus, ProjectSummary } from "@/lib/sanity/types";
+import { ImagelessPanel } from "@/components/ui/ImagelessPanel";
 
 const STATUS_LABEL: Record<ProjectStatus, string> = {
   upcoming: "Upcoming",
   in_progress: "In Progress",
   completed: "Completed",
 };
-
-/** Imageless media panel — matches PropertyCard so grids read as one system. */
-function ImagelessPanel({ label }: { label: string }) {
-  return (
-    <div className="relative flex h-full items-center justify-center bg-ink px-6 text-center">
-      <span className="font-display text-2xl leading-tight text-ivory">
-        {label}
-      </span>
-      <span aria-hidden="true">
-        <span className="absolute inset-x-5 bottom-6 h-px bg-gold/15" />
-        <span className="absolute bottom-4 right-4 h-8 w-px bg-gold/70" />
-        <span className="absolute bottom-4 right-4 h-px w-8 bg-gold/70" />
-      </span>
-    </div>
-  );
-}
 
 interface ProjectCardProps {
   project: ProjectSummary;
