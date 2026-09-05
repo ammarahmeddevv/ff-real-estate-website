@@ -49,3 +49,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 desktop.ini
+.claude/scheduled_tasks.lock
