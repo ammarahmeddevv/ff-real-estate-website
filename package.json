@@ -2,6 +2,9 @@
   "name": "ff-real-estate",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -19,8 +22,8 @@
     "next": "15.5.25",
     "next-sanity": "^9.12.3",
     "nodemailer": "^10.0.0",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "sanity": "^3.99.0",
     "styled-components": "^6.5.3",
     "zod": "^4.5.4"
@@ -32,7 +35,6 @@
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
     "@types/node": "^20",
-    "@types/nodemailer": "^8.0.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5.2.0",

@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# F.F Real Estate Builder & Developers — Website
 
-## Getting Started
+Marketing and lead-generation website for F.F Real Estate Builder & Developers
+(buying, selling, renting, renovation and property documentation in F.B Area,
+Dastagir and across Karachi).
 
-First, run the development server:
+Built with **Next.js 15 (App Router)** and an **embedded Sanity CMS** (Sanity
+Studio mounted inside the same app), styled with Tailwind CSS v3, tested with
+Vitest.
+
+## Key commands
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the local dev server on http://localhost:3000 |
+| `npm test` | Run the Vitest test suite once |
+| `npm run test:watch` | Run Vitest in watch mode |
+| `npm run build` | Production build (type-checks and prerenders) |
+| `npm run seed` | Seed the Sanity dataset with initial content |
+
+Install dependencies with `npm install --legacy-peer-deps` (see below).
+
+## Local development
+
+This project folder name contains an `&` (`F&F REAL ESTATE`). npm runs `npm`
+scripts through the platform shell, and on Windows cmd.exe / PowerShell treat `&`
+as a command separator, which breaks the path and makes every `npm` script fail.
+To work around this, `.npmrc` sets `script-shell=bash`, so **a bash shell must be
+on your PATH** to run `npm` scripts in this folder. On Windows, install
+[Git for Windows](https://git-scm.com/download/win) — it ships Git Bash — and
+ensure it is on PATH. macOS/Linux already have bash; the deploy target
+(Vercel/Linux) is unaffected.
+
+Dependency installs currently require the `--legacy-peer-deps` flag due to a
+transitive peer-dependency mismatch in the Sanity toolchain:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install --legacy-peer-deps
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Documentation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Specs: `docs/superpowers/specs/`
+- Plans: `docs/superpowers/plans/`
+- `SETUP.md` — environment and Sanity project setup (added in a later task)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contributing
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**No fabricated content** — properties, prices, projects, testimonials,
+credentials. Use only real assets the business supplies.
