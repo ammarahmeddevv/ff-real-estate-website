@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/ui/Logo";
@@ -34,6 +34,7 @@ export function NavShell({ links, phones, whatsappHref, callHref }: NavShellProp
   const [menuOpen, setMenuOpen] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   useEffect(() => {
     const el = sentinelRef.current;
@@ -138,7 +139,7 @@ export function NavShell({ links, phones, whatsappHref, callHref }: NavShellProp
 
       <MobileMenu
         open={menuOpen}
-        onClose={() => setMenuOpen(false)}
+        onClose={closeMenu}
         links={links}
         phones={phones}
         whatsappHref={whatsappHref}

@@ -11,7 +11,7 @@ interface MobileActionBarProps {
  */
 export function MobileActionBar({ whatsappHref, callHref }: MobileActionBarProps) {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-px border-t border-gray-200 bg-gray-200 pb-[env(safe-area-inset-bottom)] md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 border-t border-gray-200 bg-ivory pb-[env(safe-area-inset-bottom)] md:hidden">
       <Button
         as="a"
         href={whatsappHref}
@@ -26,7 +26,7 @@ export function MobileActionBar({ whatsappHref, callHref }: MobileActionBarProps
         as="a"
         href={callHref}
         variant="outline"
-        className="rounded-none border-0 bg-ivory py-3.5"
+        className="rounded-none border-y-0 border-r-0 border-l border-gold bg-ivory py-3.5"
       >
         Call
       </Button>

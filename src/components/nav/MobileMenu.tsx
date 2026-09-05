@@ -42,6 +42,8 @@ export function MobileMenu({
   activeHref,
 }: MobileMenuProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return;
@@ -59,7 +61,7 @@ export function MobileMenu({
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (event.key !== "Tab") return;
@@ -84,7 +86,7 @@ export function MobileMenu({
       document.body.style.overflow = originalOverflow;
       previouslyFocused?.focus?.();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   return (
     <div
@@ -100,7 +102,7 @@ export function MobileMenu({
         aria-label="Close menu"
         onClick={onClose}
         className={[
-          "absolute inset-0 h-full w-full cursor-default bg-ink/40 transition-opacity duration-300",
+          "absolute inset-0 h-full w-full cursor-default bg-ink/45 motion-safe:transition-opacity motion-safe:duration-300",
           open ? "opacity-100" : "opacity-0",
         ].join(" ")}
       />
@@ -109,6 +111,7 @@ export function MobileMenu({
         role="dialog"
         aria-modal="true"
         aria-label="Site menu"
+        inert={!open || undefined}
         className={[
           "absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col bg-ivory shadow-2xl transition-transform duration-300 ease-out",
           open ? "translate-x-0" : "translate-x-full",

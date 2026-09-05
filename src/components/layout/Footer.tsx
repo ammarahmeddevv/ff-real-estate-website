@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { telHref } from "@/lib/phone";
+import { buildWhatsAppLink } from "@/lib/whatsapp";
 import type { SiteSettings } from "@/lib/sanity";
 import { Container } from "./Container";
 
@@ -25,7 +26,7 @@ const SOCIAL_LABELS: Record<string, string> = {
 
 export function Footer({ settings }: { settings: SiteSettings }) {
   const { address, phones, email, socials, hours, primaryWhatsapp } = settings;
-  const whatsappHref = `https://wa.me/${primaryWhatsapp}`;
+  const whatsappHref = buildWhatsAppLink({ phone: primaryWhatsapp });
   const year = new Date().getFullYear();
   const fullAddress = [
     address.line1,

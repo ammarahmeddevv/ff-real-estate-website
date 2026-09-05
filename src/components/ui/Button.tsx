@@ -21,7 +21,7 @@ const RING_OFFSET: Record<Tone, string> = {
 
 const VARIANTS: Record<Tone, Record<Variant, string>> = {
   light: {
-    solid: "bg-ink text-ivory hover:bg-ink-soft",
+    solid: "bg-ink text-ivory hover:bg-[#26262a]",
     outline: "border border-gold text-ink hover:bg-gold/10",
     ghost:
       "!px-0 text-ink underline decoration-transparent decoration-1 underline-offset-4 hover:decoration-gold",

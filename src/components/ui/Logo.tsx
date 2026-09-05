@@ -4,9 +4,9 @@ interface LogoProps {
 }
 
 /**
- * Hand-built "FF" monogram: two mirrored serif "F" forms inside a thin ring.
- * Uses `currentColor` throughout — ink-on-ivory in the nav, gold-on-ink in
- * the footer.
+ * Hand-built "FF" monogram: two geometric "F" forms sharing a central stem
+ * inside a thin ring, single flat weight. Uses `currentColor` throughout —
+ * ink-on-ivory in the nav, gold-on-ink in the footer.
  */
 export function Logo({
   className,
@@ -22,10 +22,16 @@ export function Logo({
       xmlns="http://www.w3.org/2000/svg"
     >
       <title>{title}</title>
-      <circle cx="24" cy="24" r="21.25" stroke="currentColor" strokeWidth="1.1" />
+      <circle cx="24" cy="24" r="21" stroke="currentColor" strokeWidth="1.25" />
       <g fill="currentColor">
-        <path d="M15 14h7v2.6h-4v5.6h3v2.6h-3V34h-3z" />
-        <path d="M33 14h-7v2.6h4v5.6h-3v2.6h3V34h3z" />
+        {/* left F */}
+        <rect x="15" y="15" width="2.6" height="18" />
+        <rect x="15" y="15" width="9.4" height="2.6" />
+        <rect x="15" y="22.7" width="7.2" height="2.6" />
+        {/* right F, sharing the central stem */}
+        <rect x="23.4" y="15" width="2.6" height="18" />
+        <rect x="23.4" y="15" width="9.4" height="2.6" />
+        <rect x="23.4" y="22.7" width="7.2" height="2.6" />
       </g>
     </svg>
   );
