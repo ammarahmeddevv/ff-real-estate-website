@@ -25,7 +25,7 @@ export function generateMetadata(): Metadata {
   return {
     title: "Properties for Sale & Rent in Karachi",
     description:
-      "Browse houses, flats, plots and commercial space represented by F.F Real Estate across Karachi — F.B Area, Dastagir, Gulshan and Scheme 33. Filter by purpose, budget, size and area.",
+      "Browse the property F.F Real Estate is representing across Karachi — F.B Area, Dastagir, Scheme 33 and Scheme 45. Filter by purpose, type, budget, size and area.",
   };
 }
 
@@ -72,9 +72,8 @@ export default async function PropertiesPage({
           Properties
         </h1>
         <p className="mt-4 font-sans text-base leading-relaxed text-gray-500">
-          Homes, plots and commercial space we&rsquo;re representing across
-          Karachi. Filter by purpose, budget, size and area to find the right
-          fit.
+          The property F.F Real Estate is representing across Karachi. Filter by
+          purpose, type, budget, size and area to find the right fit.
         </p>
       </header>
 

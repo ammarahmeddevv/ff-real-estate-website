@@ -71,7 +71,7 @@ export default async function HomePage() {
       <Section
         id="featured-properties"
         label="Featured Properties"
-        title="Homes, plots and commercial space we're representing"
+        title="Property we're representing across Karachi"
         tone="ivory"
         className="border-t border-gold/30 pt-24 md:pt-32"
       >

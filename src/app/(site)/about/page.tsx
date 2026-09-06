@@ -33,9 +33,9 @@ export default async function AboutPage() {
             </h1>
             <p className="mt-6 font-sans text-lg leading-relaxed text-ink/80 md:text-xl md:leading-relaxed">
               F.F Real Estate Builder &amp; Developers is a Karachi property
-              service. We help people buy, sell and rent homes, plots and
-              commercial space, and we take care of renovation and property
-              documentation &mdash; all handled by one team.
+              service. We help people buy, sell and rent property, and we take
+              care of renovation and property documentation &mdash; all handled
+              by one team.
             </p>
           </Reveal>
         </Container>

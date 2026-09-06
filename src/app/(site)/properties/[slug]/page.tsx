@@ -74,7 +74,7 @@ export async function generateMetadata({
   if (!property) {
     return {
       description:
-        "Browse houses, flats, plots and commercial space represented by F.F Real Estate across Karachi.",
+        "Browse the property F.F Real Estate is representing across Karachi.",
     };
   }
 

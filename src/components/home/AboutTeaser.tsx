@@ -16,10 +16,9 @@ export function AboutTeaser() {
           <MicroLabel as="p">About</MicroLabel>
           <p className="mt-5 font-display text-xl leading-relaxed md:text-2xl md:leading-[1.55]">
             F.F Real Estate is a Karachi property service based in F.B Area,
-            Dastagir Society. We help people buy, sell and rent homes and
-            commercial space, and we take care of renovation and property
-            documentation. Every enquiry is looked after directly by Syed Mustafa
-            Rehman and Mohammad Salman.
+            Dastagir Society. We help people buy, sell and rent property, and we
+            take care of renovation and property documentation. Every enquiry is
+            looked after directly by Syed Mustafa Rehman and Mohammad Salman.
           </p>
           <Link
             href="/about"

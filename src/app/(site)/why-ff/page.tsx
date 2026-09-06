@@ -59,6 +59,7 @@ export default async function WhyFFPage() {
 
           <Reveal delay={0.08}>
             <div className="mt-16 max-w-3xl border-t border-gold/30 pt-12 md:mt-20">
+              <h2 className="sr-only">In short</h2>
               <span aria-hidden="true" className="block h-px w-12 bg-gold" />
               <p className="mt-6 font-sans text-base leading-relaxed text-ivory/75 md:text-lg md:leading-relaxed">
                 In short: people who know the area, one team handling buying,
