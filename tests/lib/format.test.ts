@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatPrice, formatArea } from "@/lib/format";
+import { formatPrice, formatArea, formatDate } from "@/lib/format";
 
 describe("formatPrice", () => {
   it("prefers an explicit display string", () => {
@@ -22,5 +22,21 @@ describe("formatArea", () => {
   });
   it("returns null when absent", () => {
     expect(formatArea(undefined)).toBeNull();
+  });
+});
+
+describe("formatDate", () => {
+  it("formats an ISO datetime as a UK long date", () => {
+    expect(formatDate("2026-08-12T09:30:00.000Z")).toBe("12 August 2026");
+  });
+  it("is timezone-stable: a late-UTC timestamp keeps its UTC calendar day", () => {
+    // 23:30 UTC would roll to the next day in +hours locales; UTC pins it.
+    expect(formatDate("2026-01-01T23:30:00.000Z")).toBe("1 January 2026");
+  });
+  it("accepts a plain date string", () => {
+    expect(formatDate("2025-12-31")).toBe("31 December 2025");
+  });
+  it("returns an empty string for an invalid date", () => {
+    expect(formatDate("not-a-date")).toBe("");
   });
 });

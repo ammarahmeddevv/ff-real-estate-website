@@ -7,6 +7,7 @@
  */
 
 import type {
+  NewsCategory,
   ProjectStatus,
   PropertyPurpose,
   PropertyStatus,
@@ -40,4 +41,13 @@ export const PROJECT_STATUS_LABEL: Record<ProjectStatus, string> = {
   upcoming: "Upcoming",
   in_progress: "In progress",
   completed: "Completed",
+};
+
+/** Visitor-facing labels for the news post `category` enum. */
+export const NEWS_CATEGORY_LABEL: Record<NewsCategory, string> = {
+  listing: "New listing",
+  announcement: "Announcement",
+  market: "Market update",
+  advice: "Property advice",
+  company: "Company news",
 };

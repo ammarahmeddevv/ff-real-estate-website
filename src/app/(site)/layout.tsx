@@ -1,4 +1,4 @@
-import { getSiteSettings } from "@/lib/sanity";
+import { getSiteSettings, hasNews } from "@/lib/sanity";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { telHref } from "@/lib/phone";
 import { Nav } from "@/components/nav/Nav";
@@ -18,7 +18,10 @@ export default async function SiteLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await getSiteSettings();
+  const [settings, showNews] = await Promise.all([
+    getSiteSettings(),
+    hasNews(),
+  ]);
   const whatsappHref = buildWhatsAppLink({
     phone: settings.primaryWhatsapp,
     message: LAYOUT_WHATSAPP_MESSAGE,
@@ -35,11 +38,11 @@ export default async function SiteLayout({
       >
         Skip to content
       </a>
-      <Nav settings={settings} />
+      <Nav settings={settings} showNews={showNews} />
       <main id="content" className="min-h-[60vh] pb-16 pt-20 md:pb-0">
         {children}
       </main>
-      <Footer settings={settings} />
+      <Footer settings={settings} showNews={showNews} />
       <FloatingWhatsApp href={whatsappHref} />
       <MobileActionBar whatsappHref={whatsappHref} callHref={callHref} />
     </>

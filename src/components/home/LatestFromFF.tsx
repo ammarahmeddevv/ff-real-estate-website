@@ -1,28 +1,17 @@
-import Link from "next/link";
 import type { NewsSummary, SocialRow } from "@/lib/sanity/types";
 import { Container } from "@/components/layout/Container";
 import { MicroLabel } from "@/components/ui/MicroLabel";
 import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
+import { NewsCard } from "@/components/news/NewsCard";
 
 interface LatestFromFFProps {
   newsPosts: NewsSummary[];
   socials: SocialRow[];
 }
 
-function formatDate(value?: string | null): string | null {
-  if (!value) return null;
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return null;
-  return date.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
-
 /**
- * News teaser. Shows up to three minimal post cards when the CMS has posts,
+ * News teaser. Shows up to three real news cards when the CMS has posts,
  * otherwise a single quiet line. The "Follow on Facebook" button is always a
  * plain link — no Facebook SDK, iframe or embed.
  */
@@ -44,35 +33,12 @@ export function LatestFromFF({ newsPosts, socials }: LatestFromFFProps) {
 
         {posts.length > 0 ? (
           <Reveal delay={0.08} className="mt-12 md:mt-16">
-            <ul className="grid gap-8 md:grid-cols-3 md:gap-10">
-              {posts.map((post) => {
-                const date = formatDate(post.publishedAt);
-                return (
-                  <li key={post._id}>
-                    <Link
-                      href={`/news/${post.slug}`}
-                      className="group block border-t border-gray-200 pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
-                    >
-                      {date && (
-                        <p className="font-sans text-xs uppercase tracking-[0.1em] text-gray-500">
-                          {date}
-                        </p>
-                      )}
-                      <h3 className="mt-2 font-display text-xl leading-snug transition-colors group-hover:text-gold-deep">
-                        {post.title}
-                      </h3>
-                      {post.excerpt && (
-                        <p className="mt-2 text-sm leading-relaxed text-gray-500">
-                          {post.excerpt}
-                        </p>
-                      )}
-                      <span className="mt-3 inline-flex items-center gap-1 text-sm text-gray-500 transition-colors group-hover:text-gold-deep">
-                        Read more <span aria-hidden="true">&rarr;</span>
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
+            <ul className="grid gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3">
+              {posts.map((post) => (
+                <li key={post._id}>
+                  <NewsCard post={post} />
+                </li>
+              ))}
             </ul>
           </Reveal>
         ) : (
@@ -83,19 +49,26 @@ export function LatestFromFF({ newsPosts, socials }: LatestFromFFProps) {
           </Reveal>
         )}
 
-        {facebookUrl && (
-          <Reveal delay={0.12} className="mt-10">
-            <Button
-              as="a"
-              href={facebookUrl}
-              variant="outline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Follow on Facebook
-            </Button>
-          </Reveal>
-        )}
+        <Reveal delay={0.12} className="mt-10">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            {posts.length > 0 && (
+              <Button as="a" href="/news" variant="ghost">
+                View all news &rarr;
+              </Button>
+            )}
+            {facebookUrl && (
+              <Button
+                as="a"
+                href={facebookUrl}
+                variant="outline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Follow on Facebook
+              </Button>
+            )}
+          </div>
+        </Reveal>
       </Container>
     </section>
   );

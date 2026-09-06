@@ -15,6 +15,18 @@ const QUICK_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
+/** Insert "News" before "Contact" when there is at least one published post. */
+function quickLinks(showNews: boolean) {
+  if (!showNews) return QUICK_LINKS;
+  const at = QUICK_LINKS.findIndex((link) => link.href === "/contact");
+  const index = at === -1 ? QUICK_LINKS.length : at;
+  return [
+    ...QUICK_LINKS.slice(0, index),
+    { label: "News", href: "/news" },
+    ...QUICK_LINKS.slice(index),
+  ];
+}
+
 const SOCIAL_LABELS: Record<string, string> = {
   facebook: "Facebook Page",
   facebook_group: "Facebook Group",
@@ -24,8 +36,15 @@ const SOCIAL_LABELS: Record<string, string> = {
   other: "Social",
 };
 
-export function Footer({ settings }: { settings: SiteSettings }) {
+export function Footer({
+  settings,
+  showNews = false,
+}: {
+  settings: SiteSettings;
+  showNews?: boolean;
+}) {
   const { address, phones, email, socials, hours, primaryWhatsapp } = settings;
+  const links = quickLinks(showNews);
   const whatsappHref = buildWhatsAppLink({ phone: primaryWhatsapp });
   const year = new Date().getFullYear();
   const fullAddress = [
@@ -57,7 +76,7 @@ export function Footer({ settings }: { settings: SiteSettings }) {
           <nav aria-label="Footer">
             <p className="u-micro-label">Explore</p>
             <ul className="mt-4 space-y-2.5">
-              {QUICK_LINKS.map((link) => (
+              {links.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
