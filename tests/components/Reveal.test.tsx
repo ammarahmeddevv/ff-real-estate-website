@@ -52,3 +52,17 @@ describe("Reveal (reduced motion)", () => {
     expect(container.querySelector("[data-reveal]")).not.toBeNull();
   });
 });
+
+describe("Reveal (animated motion)", () => {
+  it("marks its wrapper with data-reveal in the animated branch", () => {
+    mockReducedMotion(false);
+
+    const { container } = render(
+      <Reveal>
+        <p>Animated content</p>
+      </Reveal>,
+    );
+
+    expect(container.querySelector("[data-reveal]")).not.toBeNull();
+  });
+});
