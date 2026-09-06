@@ -1,45 +1,9 @@
 import Link from "next/link";
 import type { Service } from "@/lib/sanity/types";
+import { FALLBACK_SERVICES } from "@/lib/services";
 import { Container } from "@/components/layout/Container";
 import { MicroLabel } from "@/components/ui/MicroLabel";
 import { Reveal } from "@/components/motion/Reveal";
-
-/**
- * The six confirmed F.F Real Estate services. Copy mirrors `scripts/seed.ts`
- * so the page reads identically whether or not the CMS is connected.
- */
-const FALLBACK_SERVICES: { title: string; summary: string }[] = [
-  {
-    title: "Property Buying",
-    summary:
-      "Shortlisted options that match your budget, area and purpose, with viewings arranged and paperwork handled.",
-  },
-  {
-    title: "Property Selling",
-    summary:
-      "Your property priced against current local sales, listed to buyers, and guided through to a completed transfer.",
-  },
-  {
-    title: "Property Rentals",
-    summary:
-      "Rental homes and units matched to tenants, and landlords connected with screened renters on a clear agreement.",
-  },
-  {
-    title: "Renovation",
-    summary:
-      "Repair and renovation work organised with trusted local tradespeople, from a single room to a full property refresh.",
-  },
-  {
-    title: "Documentation",
-    summary:
-      "Property paperwork prepared and processed correctly — sale deeds, transfers, mutation and related records.",
-  },
-  {
-    title: "Property Consultation",
-    summary:
-      "A sit-down to talk through your options, timing and budget before you commit to buying, selling or renting.",
-  },
-];
 
 interface ServicesStripProps {
   services: Service[];
@@ -51,13 +15,11 @@ interface ServicesStripProps {
  * `/services`. A gold hairline at the top marks the seam from the section above.
  */
 export function ServicesStrip({ services }: ServicesStripProps) {
-  const items =
-    services.length > 0
-      ? services.map((service) => ({
-          title: service.title,
-          summary: service.summary?.trim() ?? "",
-        }))
-      : FALLBACK_SERVICES;
+  const source = services.length > 0 ? services : FALLBACK_SERVICES;
+  const items = source.map((service) => ({
+    title: service.title,
+    summary: service.summary?.trim() ?? "",
+  }));
 
   return (
     <section className="border-t border-gold/30 bg-ivory pb-20 pt-24 text-ink md:pb-28 md:pt-32">
