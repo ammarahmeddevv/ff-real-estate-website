@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import { FormStatus, type FormStatusState } from "@/components/forms/FormStatus";
+import { submitLead } from "@/components/forms/submitLead";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 interface HeroInquiryPanelProps {
@@ -11,7 +12,7 @@ interface HeroInquiryPanelProps {
   phone: string;
 }
 
-type Purpose = "Buy" | "Rent" | "Sell";
+type Purpose = "buy" | "rent" | "sell";
 
 interface FormState {
   name: string;
@@ -27,8 +28,14 @@ const EMPTY: FormState = {
   phone: "",
   propertyInterest: "",
   budget: "",
-  purpose: "Buy",
+  purpose: "buy",
   message: "",
+};
+
+const PURPOSE_LABEL: Record<Purpose, string> = {
+  buy: "Buy",
+  rent: "Rent",
+  sell: "Sell",
 };
 
 function composeWhatsAppMessage(form: FormState): string {
@@ -36,9 +43,9 @@ function composeWhatsAppMessage(form: FormState): string {
   if (form.name) lines.push(`Name: ${form.name}`);
   if (form.propertyInterest) lines.push(`Looking for: ${form.propertyInterest}`);
   if (form.budget) lines.push(`Budget: ${form.budget}`);
-  lines.push(`Purpose: ${form.purpose}`);
+  lines.push(`Purpose: ${PURPOSE_LABEL[form.purpose]}`);
   if (form.message) lines.push("", form.message);
-  if (lines.length <= 2) lines.push("I'd like to ask about a property.");
+  if (lines.length <= 3) lines.push("I'd like to ask about a property.");
   return lines.join("\n");
 }
 
@@ -47,7 +54,10 @@ export function HeroInquiryPanel({ phone }: HeroInquiryPanelProps) {
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>(
     {},
   );
-  const [status, setStatus] = useState<"idle" | "submitting" | "done">("idle");
+  const [state, setState] = useState<FormStatusState>("idle");
+  const [formError, setFormError] = useState<string | undefined>();
+  const startedAt = useRef<number>(Date.now());
+  const websiteRef = useRef<HTMLInputElement>(null);
 
   const set =
     (key: keyof FormState) =>
@@ -60,62 +70,60 @@ export function HeroInquiryPanel({ phone }: HeroInquiryPanelProps) {
 
   function validate(): boolean {
     const next: Partial<Record<keyof FormState, string>> = {};
-    if (!form.name.trim()) next.name = "Please enter your name.";
+    if (form.name.trim().length < 2) next.name = "Please enter your name.";
     const digits = form.phone.replace(/[^\d]/g, "");
     if (!form.phone.trim()) next.phone = "Please enter a phone number.";
-    else if (digits.length < 7) next.phone = "Enter a valid phone number.";
+    else if (digits.length < 7)
+      next.phone = "Please enter a valid phone number.";
     setErrors(next);
     return Object.keys(next).length === 0;
   }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (state === "submitting") return;
     if (!validate()) return;
-    setStatus("submitting");
-    try {
-      await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name,
-          phone: form.phone,
-          propertyInterest: form.propertyInterest,
-          budget: form.budget,
-          purpose: form.purpose,
-          message: form.message,
-          source: "hero",
-        }),
-      });
-    } catch {
-      // The lead API arrives in a later task — never block the visitor.
+
+    setState("submitting");
+    setFormError(undefined);
+
+    const result = await submitLead({
+      name: form.name,
+      phone: form.phone,
+      propertyInterest: form.propertyInterest,
+      budget: form.budget,
+      purpose: form.purpose,
+      message: form.message,
+      source: "hero",
+      website: websiteRef.current?.value ?? "",
+      startedAt: startedAt.current,
+    });
+
+    if (result.ok) {
+      setErrors({});
+      setState("success");
+      return;
     }
-    setStatus("done");
+    if (result.kind === "validation") {
+      setErrors(result.errors as Partial<Record<keyof FormState, string>>);
+      setState("idle");
+      return;
+    }
+    setFormError(result.message);
+    setState("error");
   }
 
   const whatsappHref = buildWhatsAppLink({
     phone,
     message: composeWhatsAppMessage(form),
   });
+  const submitting = state === "submitting";
 
   return (
     <div
       className="rounded-[8px] border border-gray-200 bg-paper p-6 text-ink shadow-[0_18px_40px_-24px_rgba(17,17,19,0.45)] sm:p-7"
-      aria-live="polite"
     >
-      {status === "done" ? (
-        <div>
-          <h2 className="font-display text-xl leading-snug">Thank you</h2>
-          <p className="mt-3 text-sm leading-relaxed text-gray-500">
-            F.F Real Estate will be in touch shortly. You can also reach us now
-            on WhatsApp.
-          </p>
-          <div className="mt-5">
-            <WhatsAppButton phone={phone} message={composeWhatsAppMessage(form)}>
-              Continue on WhatsApp
-            </WhatsAppButton>
-          </div>
-        </div>
-      ) : (
+      {state !== "success" && (
         <form onSubmit={onSubmit} noValidate>
           <h2 className="font-display text-xl leading-snug">
             Looking for a Property?
@@ -166,9 +174,9 @@ export function HeroInquiryPanel({ phone }: HeroInquiryPanelProps) {
               value={form.purpose}
               onChange={set("purpose")}
             >
-              <option value="Buy">Buy</option>
-              <option value="Rent">Rent</option>
-              <option value="Sell">Sell</option>
+              <option value="buy">Buy</option>
+              <option value="rent">Rent</option>
+              <option value="sell">Sell</option>
             </Field>
             <Field
               as="textarea"
@@ -180,11 +188,23 @@ export function HeroInquiryPanel({ phone }: HeroInquiryPanelProps) {
             />
           </div>
 
+          {/* Honeypot — visually hidden, never shown to real users. */}
+          <div aria-hidden="true" className="sr-only">
+            <label htmlFor="hero-website">Website</label>
+            <input
+              ref={websiteRef}
+              id="hero-website"
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              defaultValue=""
+            />
+          </div>
+
           <div className="mt-6 flex flex-col gap-3">
-            <Button as="button" type="submit" disabled={status === "submitting"}>
-              {status === "submitting"
-                ? "Sending…"
-                : "Request property details"}
+            <Button as="button" type="submit" disabled={submitting}>
+              {submitting ? "Sending…" : "Request property details"}
             </Button>
             <Button
               as="a"
@@ -198,6 +218,13 @@ export function HeroInquiryPanel({ phone }: HeroInquiryPanelProps) {
           </div>
         </form>
       )}
+
+      <FormStatus
+        state={state}
+        whatsappPhone={phone}
+        whatsappMessage={composeWhatsAppMessage(form)}
+        errorMessage={formError}
+      />
     </div>
   );
 }

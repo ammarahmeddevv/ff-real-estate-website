@@ -1,8 +1,13 @@
+"use client";
+
+import { useState } from "react";
+
 import type { Property, SiteSettings } from "@/lib/sanity/types";
 import { propertyWhatsAppMessage } from "@/lib/whatsapp";
 import { telHref } from "@/lib/phone";
 import { Button } from "@/components/ui/Button";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import { InquiryForm } from "@/components/forms/InquiryForm";
 
 interface PropertyInquiryPanelProps {
   property: Property;
@@ -18,6 +23,8 @@ export function PropertyInquiryPanel({
   property,
   settings,
 }: PropertyInquiryPanelProps) {
+  const [formOpen, setFormOpen] = useState(false);
+
   const agent = property.agent ?? null;
   const whatsappPhone = agent?.whatsapp?.trim() || settings.primaryWhatsapp;
   const callNumber =
@@ -49,11 +56,38 @@ export function PropertyInquiryPanel({
           {agent ? "Call agent" : "Call us"}
         </Button>
 
-        {/* Task 11: <InquiryForm relatedProperty={property._id} source={`property:${property.slug}`} /> */}
-        <Button as="a" href="/contact" variant="ghost" className="w-full justify-center">
-          Request information
-        </Button>
+        {!formOpen && (
+          <Button
+            as="button"
+            type="button"
+            variant="ghost"
+            className="w-full justify-center"
+            aria-expanded={false}
+            aria-controls="property-inquiry-form"
+            onClick={() => setFormOpen(true)}
+          >
+            Request information
+          </Button>
+        )}
       </div>
+
+      {formOpen && (
+        <div id="property-inquiry-form" className="mt-6 border-t border-gray-200 pt-5">
+          <p className="u-micro-label">Request information</p>
+          <p className="mt-1.5 font-sans text-sm leading-relaxed text-gray-500">
+            Leave your details and we&rsquo;ll get back to you.
+          </p>
+          <div className="mt-4">
+            <InquiryForm
+              source={`property:${property.slug}`}
+              relatedPropertyId={property._id}
+              whatsappNumber={whatsappPhone}
+              whatsappMessage={message}
+              compact
+            />
+          </div>
+        </div>
+      )}
 
       {agent && (
         <div className="mt-6 border-t border-gray-200 pt-4">
