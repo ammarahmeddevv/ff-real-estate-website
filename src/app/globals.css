@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #111113;
+  --ink-soft: #1B1B1E;
+  --ivory: #F5F1E8;
+  --paper: #FBFAF6;
+  --gold: #C7A253;
+  --gold-deep: #A6863F;
+  --gray-500: #6B6B70;
+  --gray-200: #E4E1D8;
+  --danger: #B23B3B;
+  --line-dark: rgba(255, 255, 255, 0.12);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { background: var(--ivory); color: var(--ink); font-family: var(--font-inter), system-ui, sans-serif; }
+  h1, h2, h3, h4 { font-family: var(--font-fraunces), Georgia, serif; font-weight: 400; }
+  ::selection { background: var(--gold); color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+.u-micro-label { font-family: var(--font-inter), sans-serif; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem; color: var(--gold-deep); }
+
+@keyframes u-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.u-fade-in { animation: u-fade-in 400ms ease both; }
+
+/* Route-change fade (see app/(site)/template.tsx). Barely-there, opacity only.
+   The reduced-motion reset above neutralises its duration. */
+@keyframes u-page-in { from { opacity: 0; } to { opacity: 1; } }
