@@ -1,13 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { ProjectStatus, ProjectSummary } from "@/lib/sanity/types";
+import type { ProjectSummary } from "@/lib/sanity/types";
+import { PROJECT_STATUS_LABEL } from "@/lib/property-labels";
 import { ImagelessPanel } from "@/components/ui/ImagelessPanel";
-
-const STATUS_LABEL: Record<ProjectStatus, string> = {
-  upcoming: "Upcoming",
-  in_progress: "In Progress",
-  completed: "Completed",
-};
 
 interface ProjectCardProps {
   project: ProjectSummary;
@@ -17,7 +12,9 @@ interface ProjectCardProps {
 export function ProjectCard({ project }: ProjectCardProps) {
   const image = project.heroImage;
   const typeLabel = project.projectType?.trim() || "Development";
-  const statusLabel = project.status ? STATUS_LABEL[project.status] : null;
+  const statusLabel = project.status
+    ? PROJECT_STATUS_LABEL[project.status]
+    : null;
 
   return (
     <article className="group">

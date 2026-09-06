@@ -7,6 +7,7 @@
  */
 
 import type {
+  ProjectStatus,
   PropertyPurpose,
   PropertyStatus,
   PropertyType,
@@ -33,3 +34,10 @@ export const STATUS_LABEL: Record<PropertyStatus, string> = {
 export function purposeLabel(purpose: PropertyPurpose | null | undefined): string {
   return purpose === "rent" ? "For Rent" : "For Sale";
 }
+
+/** Visitor-facing labels for the project `status` enum. */
+export const PROJECT_STATUS_LABEL: Record<ProjectStatus, string> = {
+  upcoming: "Upcoming",
+  in_progress: "In progress",
+  completed: "Completed",
+};
