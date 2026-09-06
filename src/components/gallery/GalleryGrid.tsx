@@ -48,6 +48,7 @@ export function GalleryGrid({ images }: GalleryGridProps) {
                     width={img.width}
                     height={img.height}
                     sizes="(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 45vw"
+                    priority={i === 0}
                     placeholder={img.blurDataURL ? "blur" : "empty"}
                     blurDataURL={img.blurDataURL}
                     className="h-auto w-full object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-[1.02]"

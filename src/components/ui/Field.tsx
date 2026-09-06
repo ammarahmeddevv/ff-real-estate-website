@@ -28,7 +28,7 @@ type SelectField = Base &
 export type FieldProps = InputField | TextareaField | SelectField;
 
 const CONTROL =
-  "mt-1.5 w-full rounded-[4px] border bg-white px-3 py-2 font-sans text-sm text-ink shadow-none transition-colors placeholder:text-gray-500/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-1 focus-visible:ring-offset-paper";
+  "mt-1.5 w-full rounded-[4px] border bg-white px-3 py-2 font-sans text-sm text-ink shadow-none transition-colors placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-1 focus-visible:ring-offset-paper";
 
 /**
  * Label + control + error slot, sharing one id so the error is announced.

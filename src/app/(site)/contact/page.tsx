@@ -208,7 +208,7 @@ export default async function ContactPage() {
                 href={facebook.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gold-deep underline decoration-1 underline-offset-4 transition-colors hover:text-ink"
+                className="text-ink underline decoration-gold decoration-1 underline-offset-4 transition-colors hover:decoration-gold-deep"
               >
                 {SOCIAL_LABELS[facebook.platform] ?? "Facebook"}
               </a>

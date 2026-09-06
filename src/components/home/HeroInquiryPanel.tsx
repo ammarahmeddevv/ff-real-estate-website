@@ -107,8 +107,25 @@ export function HeroInquiryPanel({ phone, callNumber }: HeroInquiryPanelProps) {
       return;
     }
     if (result.kind === "validation") {
-      setErrors(result.errors as Partial<Record<keyof FormState, string>>);
-      setState("idle");
+      // Only "name" and "phone" render an inline error slot in this panel.
+      const shown: Partial<Record<keyof FormState, string>> = {};
+      for (const [key, value] of Object.entries(result.errors)) {
+        if ((key === "name" || key === "phone") && typeof value === "string") {
+          shown[key] = value;
+        }
+      }
+      if (Object.keys(shown).length > 0) {
+        setErrors(shown);
+        setState("idle");
+        return;
+      }
+      // Nothing we can pin to a field — surface a general message instead of a
+      // silent no-op so the visitor always has a way forward.
+      setErrors({});
+      setFormError(
+        "Please check your details and try again, or reach us on WhatsApp.",
+      );
+      setState("error");
       return;
     }
     setFormError(result.message);

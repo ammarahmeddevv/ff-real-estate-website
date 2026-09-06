@@ -41,7 +41,7 @@ export default async function NewsPage() {
         </p>
       </header>
 
-      <div className="mt-12 md:mt-16">
+      <div className={posts.length > 0 ? "mt-12 md:mt-16" : "mt-8"}>
         {posts.length > 0 ? (
           <NewsGrid posts={posts} />
         ) : (

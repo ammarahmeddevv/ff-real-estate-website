@@ -58,7 +58,7 @@ export function Footer({
     .join(", ");
 
   return (
-    <footer className="bg-ink text-ivory">
+    <footer className="bg-ink pb-16 text-ivory md:pb-0">
       <Container className="py-16 md:py-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>

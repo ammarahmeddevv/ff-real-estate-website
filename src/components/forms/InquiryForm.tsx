@@ -115,8 +115,28 @@ export function InquiryForm({
     }
 
     if (result.kind === "validation") {
-      setErrors(result.errors as Partial<Record<keyof Fields, string>>);
-      setState("idle");
+      // Only surface field errors that map to a control the visitor can see —
+      // the Email + Preferred-contact fields are dropped in `compact` mode.
+      const visibleKeys: (keyof Fields)[] = compact
+        ? ["name", "phone", "message"]
+        : ["name", "phone", "email", "message"];
+      const shown: Partial<Record<keyof Fields, string>> = {};
+      for (const [key, value] of Object.entries(result.errors)) {
+        if (visibleKeys.includes(key as keyof Fields) && typeof value === "string") {
+          shown[key as keyof Fields] = value;
+        }
+      }
+      if (Object.keys(shown).length > 0) {
+        setErrors(shown);
+        setState("idle");
+        return;
+      }
+      // Errors we can't attach to a field — never leave the visitor stuck.
+      setErrors({});
+      setFormError(
+        "Please check your details and try again, or reach us on WhatsApp.",
+      );
+      setState("error");
       return;
     }
 

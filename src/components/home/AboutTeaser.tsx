@@ -22,7 +22,7 @@ export function AboutTeaser() {
           </p>
           <Link
             href="/about"
-            className="mt-8 inline-flex items-center gap-1 font-sans text-sm text-gold-deep underline-offset-4 hover:underline"
+            className="mt-8 inline-flex items-center gap-1 font-sans text-sm text-ink underline decoration-transparent decoration-1 underline-offset-4 transition-colors hover:decoration-gold"
           >
             More about F.F Real Estate <span aria-hidden="true">&rarr;</span>
           </Link>

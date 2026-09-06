@@ -10,6 +10,11 @@ interface SectionProps {
   title?: ReactNode;
   tone?: Tone;
   className?: string;
+  /**
+   * Trims the vertical padding — use when the section holds only an empty
+   * state so a zero-content page doesn't open up large blank voids.
+   */
+  compact?: boolean;
   children: ReactNode;
 }
 
@@ -29,18 +34,25 @@ export function Section({
   title,
   tone = "light",
   className,
+  compact = false,
   children,
 }: SectionProps) {
   return (
     <section
       id={id}
-      className={["py-20 md:py-28", TONE[tone], className]
+      className={[
+        compact ? "py-14 md:py-16" : "py-20 md:py-28",
+        TONE[tone],
+        className,
+      ]
         .filter(Boolean)
         .join(" ")}
     >
       <Container>
         {(label || title) && (
-          <header className="mb-10 max-w-2xl md:mb-14">
+          <header
+            className={compact ? "mb-6 max-w-2xl" : "mb-10 max-w-2xl md:mb-14"}
+          >
             {label && (
               <MicroLabel
                 as="p"

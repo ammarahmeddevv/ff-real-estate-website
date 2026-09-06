@@ -16,6 +16,7 @@ import { GENERAL_ENQUIRY_MESSAGE, buildWhatsAppLink } from "@/lib/whatsapp";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/EmptyState";
+import { MicroLabel } from "@/components/ui/MicroLabel";
 import { PropertyFilters } from "@/components/property/PropertyFilters";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 
@@ -85,7 +86,7 @@ export default async function PropertiesPage({
             <PropertyGrid properties={properties} />
           ) : hasActiveFilters ? (
             <div className="mx-auto max-w-xl rounded-lg border border-gray-200 bg-paper px-8 py-14 text-center">
-              <p className="u-micro-label">No matches</p>
+              <MicroLabel as="p">No matches</MicroLabel>
               <h2 className="mt-3 font-display text-2xl">
                 No properties match these filters
               </h2>

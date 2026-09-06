@@ -59,7 +59,7 @@ export function ServicesStrip({ services }: ServicesStripProps) {
         <Reveal delay={0.12} className="mt-12">
           <Link
             href="/services"
-            className="inline-flex items-center gap-1 font-sans text-sm text-gold-deep underline-offset-4 hover:underline"
+            className="inline-flex items-center gap-1 font-sans text-sm text-ink underline decoration-transparent decoration-1 underline-offset-4 transition-colors hover:decoration-gold"
           >
             All services <span aria-hidden="true">&rarr;</span>
           </Link>

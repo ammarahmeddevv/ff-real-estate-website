@@ -93,7 +93,12 @@ export default async function HomePage() {
         label="Featured Properties"
         title="Property we're representing across Karachi"
         tone="ivory"
-        className="border-t border-gold/30 pt-24 md:pt-32"
+        compact={featuredProperties.length === 0}
+        className={
+          featuredProperties.length > 0
+            ? "border-t border-gold/30 pt-24 md:pt-32"
+            : "border-t border-gold/30"
+        }
       >
         {featuredProperties.length > 0 ? (
           <>
@@ -120,7 +125,12 @@ export default async function HomePage() {
         label="Projects & Developments"
         title="Builder and developer projects"
         tone="ivory"
-        className="border-t border-gold/30 pt-24 md:pt-32"
+        compact={featuredProjects.length === 0}
+        className={
+          featuredProjects.length > 0
+            ? "border-t border-gold/30 pt-24 md:pt-32"
+            : "border-t border-gold/30"
+        }
       >
         {featuredProjects.length > 0 ? (
           <>

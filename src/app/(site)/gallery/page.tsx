@@ -9,6 +9,7 @@ import type { GalleryCategory, GalleryImage } from "@/lib/sanity/types";
 import { GALLERY_CATEGORIES } from "@/lib/property-labels";
 import { Container } from "@/components/layout/Container";
 import { EmptyState } from "@/components/EmptyState";
+import { MicroLabel } from "@/components/ui/MicroLabel";
 import { GalleryFilters } from "@/components/gallery/GalleryFilters";
 import { GalleryGrid } from "@/components/gallery/GalleryGrid";
 
@@ -77,7 +78,7 @@ export default async function GalleryPage({
         <GalleryGrid images={images} />
       ) : category && categories.length > 0 ? (
         <div className="mx-auto mt-10 max-w-xl rounded-lg border border-gray-200 bg-paper px-8 py-12 text-center">
-          <p className="u-micro-label">No photos here yet</p>
+          <MicroLabel as="p">No photos here yet</MicroLabel>
           <h2 className="mt-3 font-display text-2xl">
             Nothing in this category yet
           </h2>

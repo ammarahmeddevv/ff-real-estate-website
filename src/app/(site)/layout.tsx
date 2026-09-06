@@ -42,7 +42,7 @@ export default async function SiteLayout({
         Skip to content
       </a>
       <Nav settings={settings} showNews={showNews} />
-      <main id="content" className="min-h-[60vh] pb-16 pt-20 md:pb-0">
+      <main id="content" className="min-h-[60vh] pt-20">
         {children}
       </main>
       <Footer settings={settings} showNews={showNews} />

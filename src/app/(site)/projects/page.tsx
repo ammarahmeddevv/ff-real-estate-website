@@ -47,7 +47,7 @@ export default async function ProjectsPage() {
         </p>
       </header>
 
-      <div className="mt-12 md:mt-16">
+      <div className={projects.length > 0 ? "mt-12 md:mt-16" : "mt-8"}>
         {projects.length > 0 ? (
           <ProjectGrid projects={projects} />
         ) : (
