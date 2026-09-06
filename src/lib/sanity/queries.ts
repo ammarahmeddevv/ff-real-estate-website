@@ -176,8 +176,9 @@ export const NEWS_BY_SLUG_QUERY = `*[_type == "newsPost" && slug.current == $slu
 /* Gallery                                                                   */
 /* -------------------------------------------------------------------------- */
 
-// `$category` == "all" (or empty) returns everything; otherwise filters by enum.
-export const GALLERY_QUERY = `*[_type == "galleryImage" && ($category == "all" || $category == "" || category == $category)]
+// `$category == null` returns every image with an asset; otherwise filters by
+// the `galleryImage.category` enum. Callers pass a validated enum value or null.
+export const GALLERY_QUERY = `*[_type == "galleryImage" && defined(image.asset) && ($category == null || category == $category)]
   | order(_createdAt desc){
     _id,
     category,
@@ -186,6 +187,11 @@ export const GALLERY_QUERY = `*[_type == "galleryImage" && ($category == "all" |
     "relatedProperty": relatedProperty->{ title, "slug": slug.current },
     "relatedProject": relatedProject->{ name, "slug": slug.current }
   }`;
+
+/** Distinct categories that actually have at least one image — for the filter chips. */
+export const GALLERY_CATEGORIES_QUERY = `array::unique(
+  *[_type == "galleryImage" && defined(image.asset)].category
+)`;
 
 /* -------------------------------------------------------------------------- */
 /* Testimonials                                                              */

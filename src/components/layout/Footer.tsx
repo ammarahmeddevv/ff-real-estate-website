@@ -10,6 +10,7 @@ const QUICK_LINKS = [
   { label: "Home", href: "/" },
   { label: "Properties", href: "/properties" },
   { label: "Projects", href: "/projects" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Services", href: "/services" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },

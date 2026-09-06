@@ -7,6 +7,7 @@
  */
 
 import type {
+  GalleryCategory,
   NewsCategory,
   ProjectStatus,
   PropertyPurpose,
@@ -41,6 +42,30 @@ export const PROJECT_STATUS_LABEL: Record<ProjectStatus, string> = {
   upcoming: "Upcoming",
   in_progress: "In progress",
   completed: "Completed",
+};
+
+/**
+ * Gallery categories in display order, and their visitor-facing labels.
+ * Must stay in sync with `src/sanity/schemaTypes/galleryImage.ts`.
+ */
+export const GALLERY_CATEGORIES: readonly GalleryCategory[] = [
+  "exterior",
+  "interior",
+  "building",
+  "neighbourhood",
+  "commercial",
+  "construction",
+  "project",
+];
+
+export const GALLERY_CATEGORY_LABEL: Record<GalleryCategory, string> = {
+  exterior: "Exterior",
+  interior: "Interior",
+  building: "Building",
+  neighbourhood: "Neighbourhood",
+  commercial: "Commercial",
+  construction: "Construction",
+  project: "Project",
 };
 
 /** Visitor-facing labels for the news post `category` enum. */
