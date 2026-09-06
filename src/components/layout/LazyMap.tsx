@@ -53,7 +53,7 @@ export function LazyMap({ query, lat, lng, title, className }: LazyMapProps) {
             src={embedSrc}
             title={`Map — ${title}`}
             loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
+            referrerPolicy="origin-when-cross-origin"
             className="absolute inset-0 h-full w-full border-0"
             allowFullScreen
           />
@@ -76,7 +76,7 @@ export function LazyMap({ query, lat, lng, title, className }: LazyMapProps) {
           View map
         </Button>
         <p className="font-sans text-xs uppercase tracking-[0.14em] text-ivory/55">
-          Opens Google Maps
+          Loads an embedded map
         </p>
       </div>
     </div>

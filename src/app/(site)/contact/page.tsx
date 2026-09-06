@@ -59,9 +59,8 @@ export default async function ContactPage() {
               Contact F.F Real Estate
             </h1>
             <p className="mt-6 font-sans text-lg leading-relaxed text-ink/80 md:text-xl md:leading-relaxed">
-              The fastest way to reach us is WhatsApp &mdash; you&rsquo;ll
-              usually get a reply the same day. You can also call, email or drop
-              into the office in F.B Area, Dastagir Society.
+              The fastest way to reach us is WhatsApp. You can also call, email
+              or drop into the office in F.B Area, Dastagir Society.
             </p>
           </Reveal>
         </Container>
@@ -141,9 +140,6 @@ export default async function ContactPage() {
                 {address.line1 && <span className="block">{address.line1}</span>}
                 {address.area && <span className="block">{address.area}</span>}
                 {cityLine && <span className="block">{cityLine}</span>}
-              </p>
-              <p className="mt-5 max-w-md text-base leading-relaxed text-ink/70">
-                Near Taal Stop, F.B Area &mdash; Dastagir Society.
               </p>
               <div className="mt-6">
                 <Button

@@ -233,6 +233,12 @@ export default async function PropertyPage({
                   title={property.title}
                   className="mt-6"
                 />
+              ) : property.location?.trim() ? (
+                <LazyMap
+                  query={`${property.location}, Karachi`}
+                  title={property.title}
+                  className="mt-6"
+                />
               ) : null}
               <div className="mt-5">
                 <Button
