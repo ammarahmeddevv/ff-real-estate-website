@@ -34,7 +34,6 @@
 - **Motion:** every animation must be disabled (no transforms, immediate final state) under `prefers-reduced-motion: reduce`.
 - **Accessibility:** WCAG AA contrast, one `<h1>` per page, visible gold focus rings, keyboard-operable menus/lightbox/forms, every CMS image requires `alt`.
 - **Tests:** Vitest. `npm test` must pass at the end of every task. Commit at the end of every task.
-- **Commit message trailer:** end every commit body with `Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>`.
 
 ---
 
@@ -295,7 +294,7 @@ Run: `npm run dev`, load `http://localhost:3000`, confirm the heading renders in
 git add -A
 git commit -m "chore: scaffold Next.js app, design tokens, fonts, Vitest
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -426,7 +425,7 @@ export function formatArea(area?: { value: number; unit: string }): string | nul
 git add src/lib/whatsapp.ts src/lib/format.ts tests/lib/whatsapp.test.ts tests/lib/format.test.ts
 git commit -m "feat: WhatsApp link builder and price/area formatters
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -587,7 +586,7 @@ If `NEXT_PUBLIC_SANITY_PROJECT_ID` is set in `.env.local`: run `npm run dev`, op
 git add sanity.config.ts sanity.cli.ts src/sanity tests/sanity src/app/studio
 git commit -m "feat: Sanity schema and embedded Studio at /studio
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -669,7 +668,7 @@ Define interfaces in `types.ts`. In `fetch.ts` or a new `settings.ts`, implement
 git add src/lib/sanity src/lib/site.ts tests/lib/sanity-image.test.ts
 git commit -m "feat: Sanity client, image helpers, GROQ queries, typed fetch with fallback
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -694,7 +693,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add scripts/seed.ts package.json package-lock.json
 git commit -m "feat: idempotent Sanity seed script for settings, services, agents
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -731,7 +730,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/components src/app/layout.tsx tests/components/Nav.test.tsx
 git commit -m "feat: global shell — nav, footer, floating WhatsApp, mobile action bar, UI primitives
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -756,7 +755,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/components/motion tests/components/Reveal.test.tsx
 git commit -m "feat: reduced-motion-safe Reveal primitive
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -798,7 +797,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/components/home src/components/property src/components/project src/app/page.tsx src/components/ui/Field.tsx tests/components/PropertyCard.test.tsx
 git commit -m "feat: home page with all sections and graceful empty states
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -831,7 +830,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/lib/filters.ts src/components/property/PropertyFilters.tsx src/app/properties/page.tsx tests/lib/filters.test.ts
 git commit -m "feat: property listing with URL-driven premium filters
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -868,7 +867,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/components/property src/components/gallery/Lightbox.tsx src/components/content/PortableText.tsx src/app/properties/[slug] tests/components/Lightbox.test.tsx package.json package-lock.json
 git commit -m "feat: individual property page with gallery, lightbox, WhatsApp-first inquiry panel
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -907,7 +906,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/lib/leads.ts src/lib/email.ts src/app/api/lead src/components/forms src/components/home/HeroInquiryPanel.tsx tests/lib/leads.test.ts tests/api/lead.test.ts
 git commit -m "feat: lead capture API with Sanity write, email notify, spam guard, shared inquiry form
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -932,7 +931,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/app/projects
 git commit -m "feat: projects listing and detail pages
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -957,7 +956,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/app/about src/app/services src/app/why-ff
 git commit -m "feat: About, Services, Why F.F pages (verified content only)
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -987,7 +986,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/components/layout/LazyMap.tsx src/app/contact src/components/home/LocationBlock.tsx src/app/properties src/app/projects tests/components/LazyMap.test.tsx
 git commit -m "feat: contact page and lazy-loaded map embed
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -1016,7 +1015,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/components/news src/app/news src/components/nav src/components/layout/Footer.tsx src/components/home/LatestFromFF.tsx
 git commit -m "feat: news section with conditional nav link and editorial article layout
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -1042,7 +1041,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/components/gallery src/app/gallery
 git commit -m "feat: filterable gallery page with lightbox
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -1074,7 +1073,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add src/lib/metadata.ts src/components/seo src/app/sitemap.ts src/app/robots.ts src/app/not-found.tsx src/app/opengraph-image.tsx src/app tests/lib/metadata.test.ts
 git commit -m "feat: SEO — metadata helpers, local-business + property JSON-LD, sitemap, robots, OG image
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -1100,7 +1099,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add -A
 git commit -m "feat: restrained scroll + hover motion, fully reduced-motion safe
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -1123,7 +1122,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add -A
 git commit -m "perf+a11y: image sizing, lazy media, focus management, contrast, Lighthouse pass
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -1147,7 +1146,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add scripts/seed-listings.ts docs/CONTENT-TO-VERIFY.md
 git commit -m "chore: draft property listings seeded from real Facebook posts for client verification
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
@@ -1173,7 +1172,7 @@ Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
 git add SETUP.md README.md .env.example
 git commit -m "docs: SETUP.md handover guide, env reference, README
 
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>"
+"
 ```
 
 ---
