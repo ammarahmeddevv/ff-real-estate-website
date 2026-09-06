@@ -3,11 +3,17 @@ import type { NewsPost, Property, SiteSettings } from "@/lib/sanity/types";
 import { excerptFromPortableText } from "@/lib/portable-text-excerpt";
 
 /**
- * Canonical site origin. Unset locally (no `.env.local`) so it defaults to
- * localhost — the client sets the real value at deploy time.
+ * Canonical site origin. Prefer the explicit `NEXT_PUBLIC_SITE_URL`; if the
+ * SETUP step that sets it was missed, fall back to Vercel's own deployment URL
+ * (`NEXT_PUBLIC_VERCEL_URL` — exposed to the client build, unlike the
+ * server-only `VERCEL_URL`) so production never silently uses localhost. Only
+ * local dev with no `.env.local` lands on the final localhost default.
  */
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  (process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : "http://localhost:3000");
 
 /** OpenGraph siteName + JSON-LD organisation name. */
 const SITE_NAME = "F.F Real Estate Builder & Developers";

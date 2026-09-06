@@ -97,7 +97,7 @@ Useful commands:
 
    ```bash
    npx sanity login
-   npx sanity init --project
+   npx sanity init
    ```
 
    When prompted:
@@ -160,7 +160,10 @@ NEXT_PUBLIC_SANITY_API_VERSION=2024-10-01
 
    ```bash
    git remote add origin https://github.com/YOUR-USERNAME/ff-real-estate.git
-   git push -u origin main
+   # Push whichever branch holds the finished code. If that is `build/website`:
+   git push -u origin build/website
+   # (Or merge it into `main` first and push `main`.) In Vercel's import step,
+   # set the Production Branch to whichever branch you pushed.
    ```
 2. Go to <https://vercel.com>, sign up with GitHub, **Add New… → Project**,
    import the repo.
@@ -173,13 +176,22 @@ NEXT_PUBLIC_SANITY_API_VERSION=2024-10-01
    | `NEXT_PUBLIC_SANITY_DATASET` | `production` |
    | `NEXT_PUBLIC_SANITY_API_VERSION` | `2024-10-01` |
    | `SANITY_API_WRITE_TOKEN` | the Editor token (needed so the contact form can save leads) |
-   | `NEXT_PUBLIC_SITE_URL` | leave blank for now, set in step A.6 |
+   | `NEXT_PUBLIC_SITE_URL` | your intended final URL, `https://`, no trailing slash — e.g. `https://ff-real-estate.vercel.app` or F.F's domain |
+
+   Set `NEXT_PUBLIC_SITE_URL` **before this first deploy** so SEO tags, the
+   sitemap and `robots.txt` point at the real domain. If you genuinely don't
+   know the URL yet, you may leave it unset for the very first deploy — the site
+   falls back to Vercel's own `*.vercel.app` deployment URL (never localhost) —
+   then set it properly in step A.6 and redeploy.
 
    Add the Gmail variables now too if you have done Part B, otherwise add them
    later.
 4. **Deploy.** Wait for it to finish and note the URL Vercel gives you
    (e.g. `ff-real-estate.vercel.app`), or connect F.F's own domain under
    **Settings → Domains**.
+5. **Verify the site URL took effect:** open `https://your-site/robots.txt` and
+   confirm the `Sitemap:` line shows your real domain, not `localhost`. If it
+   still says localhost, fix `NEXT_PUBLIC_SITE_URL` (step A.6) and redeploy.
 
 ### A.5 Allow the live site to talk to Sanity (CORS)
 
@@ -226,8 +238,9 @@ only, never lost.
 
 ## Part C — Using the content editor (Studio)
 
-Go to `yoursite.com/studio` and sign in. Changes are **live the moment you
-press Publish** (a document stays a grey "draft" until then).
+Go to `yoursite.com/studio` and sign in. Changes **appear on the site within
+about a minute of pressing Publish** (pages refresh on a short timer). A
+document stays a grey "draft" until you press Publish.
 
 ### Site Settings (edit once, update as things change)
 
@@ -270,8 +283,9 @@ One document. Controls site-wide details:
 - **Gallery** — upload photos. **For every image fill in "Alt text"** — a
   one-line description of the photo, used for accessibility and Google. If there
   are no photos, leave it empty; the page shows a clean text-only layout.
-- **Map** — optional; a Google Maps URL or latitude/longitude shows a
-  click-to-load map on the property page.
+- **Map** — optional. Add **latitude and longitude** for a pin; otherwise the
+  map falls back to the address / location text. (A pasted Google Maps URL is
+  stored but not currently shown on the page.)
 - **Agent** — link to Syed Mustafa Rehman or Mohammad Salman (created by
   `npm run seed`).
 - **Featured** — tick to feature it on the home page.
@@ -350,7 +364,7 @@ Key things flagged for F.F's confirmation (see the doc for the rest):
 | 7 | Facebook page and group links — confirm both are correct in Site Settings. |
 | 8 | Projects / News / Gallery show tasteful "coming soon" states until content is added. |
 | 9 | **Logo** — the site currently uses a text wordmark. Upload a real logo in Site Settings if F.F has one. |
-| 10 | **Testimonials** — the section only appears if real testimonial documents are added. Do not invent them. |
+| 10 | **Testimonials** — the site has **no testimonials section**. If F.F wants one later, that is a development change — do not enter testimonials expecting them to appear, and never invent them. |
 
 ---
 
@@ -386,10 +400,12 @@ close after go-live:
    embed fails in production.
 3. **Reduced-motion spot check** (Part E item 6) — 30 seconds with OS
    "reduce motion" on.
-4. **`npm audit`** reports issues in the Sanity **development** toolchain only
-   (Studio build tools). None of it ships in the public site bundle. Update
-   Sanity packages periodically (`npm update` then `npm test` and
-   `npm run build`).
+4. **`npm audit`** currently reports about 12 findings (moderate/high),
+   including advisories against `next` and `postcss` — not only Sanity tooling.
+   The runtime site is not affected: the `postcss` advisories are build-time
+   issues affecting attacker-supplied CSS, and all CSS here is first-party.
+   Clearing them fully requires a Next.js major-version upgrade, which a
+   developer should schedule as separate work — it is not a blocker for launch.
 5. **Custom domain** — connect F.F's domain in Vercel → Settings → Domains, then
    update `NEXT_PUBLIC_SITE_URL` and the Sanity CORS origins to match.
 

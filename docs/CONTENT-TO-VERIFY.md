@@ -35,10 +35,9 @@ Notes on what we did and did not assume:
 - **Listing 1 — bathrooms.** The post said "3 Bed Attached Washroom" plus
   "1 common washroom", so we entered **4** bathrooms. Correct this if that reading
   is wrong.
-- **Listing 2 — size.** The post said "Size 8*5/20". We entered **20 sq. yd** and
-  wrote "Size given as 8 × 5 (we read the '/20' as around 20 sq. yd)" into the
-  description so the exact figure from the post is kept as-is. Fix the number if it
-  should be different.
+- **Listing 2 — size.** The post said "Size 8*5/20". We read the "/20" as roughly
+  20 sq. yd, entered **20 sq. yd**, and the description reads "Size approximately
+  8 × 5 (about 20 sq. yd)". Fix the number if it should be different.
 - **Post dates.** We recorded these as **2026** (Facebook showed no year, which
   usually means the current year). If a post is actually from 2025, correct the
   "Published" date on that listing in the Studio.
@@ -163,7 +162,22 @@ The site uses a **redrawn "FF" monogram** we created for it.
 
 ---
 
-## 10. Testimonials
+## 10. Service descriptions & staff titles
+
+The Services pages describe *how* F.F carries out each service (e.g. renovation,
+documentation, valuation) in specific terms, and both contacts are listed with the
+title **"Property Consultant"**. These were drafted from general practice, not
+supplied by F.F.
+
+- [ ] Read each service summary and "what you get" list, and the two staff titles.
+      Change any wording that promises something F.F does not do, or a title F.F
+      does not use. The copy lives in `src/lib/services.ts` (fallback) and
+      `scripts/seed.ts` (the services block and the agent roles) — keep the two in
+      step, or ask the developer to.
+
+---
+
+## 11. Testimonials
 
 There are **no testimonials on the site** — none were supplied, and we do not invent
 them.

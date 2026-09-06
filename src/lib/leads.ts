@@ -18,39 +18,61 @@ const PURPOSE = ["buy", "rent", "sell", "consult", "other"] as const;
 const emptyToUndefined = (v: unknown) =>
   typeof v === "string" && v.trim() === "" ? undefined : v;
 
-const optionalText = z.preprocess(emptyToUndefined, z.string().optional());
+/** Optional free-text field with a hard upper bound (defence against abuse). */
+const optionalText = (max: number) =>
+  z.preprocess(emptyToUndefined, z.string().max(max).optional());
 
 export const leadSchema = z.object({
   name: z.preprocess(
     (v) => (typeof v === "string" ? v.trim() : v),
-    z.string().min(2, "Please enter your name."),
+    z
+      .string()
+      .min(2, "Please enter your name.")
+      .max(100, "Please shorten your name."),
   ),
   phone: z.preprocess(
     (v) => (typeof v === "string" ? v.trim() : v),
     z
       .string()
       .min(7, "Please enter a valid phone number.")
+      .max(32, "Please enter a valid phone number.")
       .regex(/^[\d\s+()-]+$/, "Please enter a valid phone number."),
   ),
   email: z.preprocess(
     emptyToUndefined,
-    z.email("Please enter a valid email address.").optional(),
+    z
+      .email("Please enter a valid email address.")
+      .max(254, "Please enter a valid email address.")
+      .optional(),
   ),
   preferredContact: z.preprocess(
     emptyToUndefined,
     z.enum(PREFERRED_CONTACT).optional(),
   ),
   purpose: z.preprocess(emptyToUndefined, z.enum(PURPOSE).optional()),
-  propertyInterest: optionalText,
-  budget: optionalText,
-  message: optionalText,
-  relatedPropertyId: optionalText,
+  propertyInterest: optionalText(200),
+  budget: optionalText(200),
+  message: optionalText(4000),
+  /**
+   * Internal hidden field. Must look like a Sanity document id before it is
+   * written into a `_ref`. A bad value is dropped silently (`.catch`) rather
+   * than 400'd — it should never cost a real visitor their lead.
+   */
+  relatedPropertyId: z.preprocess(
+    emptyToUndefined,
+    z
+      .string()
+      .max(128)
+      .regex(/^[A-Za-z0-9._-]+$/)
+      .optional()
+      .catch(undefined),
+  ),
   source: z.preprocess(
     emptyToUndefined,
-    z.string().default("unknown"),
+    z.string().max(120).default("unknown"),
   ),
   /** Honeypot — real users never see or fill this. */
-  website: optionalText,
+  website: optionalText(400),
   /** Epoch ms recorded when the form mounted, for the time-to-submit check. */
   startedAt: z.number().optional(),
 });
@@ -95,8 +117,6 @@ export function isSpam(
 export type CreateLeadResult =
   | { ok: true; id: string }
   | { ok: false; reason: "not-configured" | "error" };
-
-let loggedWriteError = false;
 
 /**
  * Persist the lead as a `lead` document in Sanity. Returns `not-configured`
@@ -143,10 +163,9 @@ export async function createLead(data: LeadInput): Promise<CreateLeadResult> {
     const created = await client.create(doc as { _type: string });
     return { ok: true, id: created._id };
   } catch (error) {
-    if (!loggedWriteError) {
-      loggedWriteError = true;
-      console.error("[lead] Sanity write failed:", error);
-    }
+    // Log every failure — a sustained outage must not go silent after the
+    // first hit. The route also logs the full payload on this branch.
+    console.error("[lead] Sanity write failed:", error);
     return { ok: false, reason: "error" };
   }
 }

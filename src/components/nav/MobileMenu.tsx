@@ -28,8 +28,12 @@ function isActive(href: string, activeHref: string | undefined): boolean {
   return href === "/" ? activeHref === "/" : activeHref.startsWith(href);
 }
 
+/** Below this width the menu panel is rendered; at or above it the desktop nav
+ * takes over (`NavShell` switches at Tailwind's `xl` = 1280px). */
+const DESKTOP_NAV_QUERY = "(min-width: 1280px)";
+
 /**
- * Full-height slide-in menu for `< lg`. Focus-trapped while open, closes on
+ * Full-height slide-in menu for `< xl`. Focus-trapped while open, closes on
  * `Esc` or backdrop click, locks background scroll, and pins a WhatsApp CTA
  * at the bottom.
  */
@@ -47,6 +51,17 @@ export function MobileMenu({
 
   useEffect(() => {
     if (!open) return;
+
+    // Defence in depth: the panel is only mounted below `xl` (the `xl:hidden`
+    // wrapper). If this effect ever runs at desktop width, do NOT lock scroll —
+    // there is no visible panel or close control there, so the page would be
+    // stuck. `matchMedia` is absent in some test envs; the `?.` handles that.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia?.(DESKTOP_NAV_QUERY).matches
+    ) {
+      return;
+    }
 
     const panel = panelRef.current;
     const previouslyFocused = document.activeElement as HTMLElement | null;
@@ -91,7 +106,7 @@ export function MobileMenu({
   return (
     <div
       className={[
-        "fixed inset-0 z-[60] lg:hidden",
+        "fixed inset-0 z-[60] xl:hidden",
         open ? "pointer-events-auto" : "pointer-events-none",
       ].join(" ")}
       aria-hidden={!open}

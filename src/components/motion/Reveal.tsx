@@ -67,7 +67,11 @@ export function Reveal({
 
     const withinFold = (ratio: number) => {
       const rect = el.getBoundingClientRect();
-      return rect.bottom > 0 && rect.top < window.innerHeight * ratio;
+      // No lower bound: anything at OR ABOVE the fold should already be shown.
+      // (Requiring `rect.bottom > 0` stranded any element scrolled above the
+      // viewport on mount — e.g. after a reload that restores scroll position —
+      // at opacity 0 forever, since it never intersects again on the way down.)
+      return rect.top < window.innerHeight * ratio;
     };
 
     // Already on screen when the observer is wired up (above-the-fold, fast
@@ -86,7 +90,10 @@ export function Reveal({
             observer?.disconnect();
           }
         },
-        { rootMargin: "0px 0px -10% 0px" },
+        // Wide top margin so fast wheel scrolls and native smooth-scroll jumps
+        // (`html { scroll-behavior: smooth }`) still trip the observer even when
+        // the element transits between IntersectionObserver sampling frames.
+        { rootMargin: "400px 0px -10% 0px" },
       );
       observer.observe(el);
     } else {

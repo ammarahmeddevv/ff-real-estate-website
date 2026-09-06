@@ -4,6 +4,18 @@ import { POST } from "@/app/api/lead/route";
 import { createLead } from "@/lib/leads";
 import { sendLeadEmail } from "@/lib/email";
 
+// The route defers the email with `after()` from next/server, which throws
+// outside a request scope. Stub it to run the task immediately (swallowing any
+// rejection, exactly as the real callback wrapper does) so tests can assert the
+// notification fired.
+vi.mock("next/server", () => ({
+  after: (task: () => unknown) => {
+    void Promise.resolve()
+      .then(task)
+      .catch(() => {});
+  },
+}));
+
 vi.mock("@/lib/leads", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/leads")>();
   return { ...actual, createLead: vi.fn() };
@@ -69,13 +81,29 @@ describe("POST /api/lead", () => {
     expect(sendLeadEmailMock).not.toHaveBeenCalled();
   });
 
-  it("returns 500 when persistence genuinely fails", async () => {
+  it("does not lose the lead when the Sanity write genuinely fails", async () => {
+    const errorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
     createLeadMock.mockResolvedValue({ ok: false, reason: "error" });
+
     const res = await post(validBody);
-    expect(res.status).toBe(500);
-    const json = await res.json();
-    expect(json.ok).toBe(false);
-    expect(json.errors._form).toBeTruthy();
+
+    // 202 (accepted, not fully persisted) — never a bare 500 with nothing sent.
+    expect(res.status).toBe(202);
+    await expect(res.json()).resolves.toEqual({ ok: true });
+    // The email notification still fires so the lead reaches Gmail.
+    expect(sendLeadEmailMock).toHaveBeenCalledTimes(1);
+    expect(sendLeadEmailMock).toHaveBeenCalledWith(
+      expect.objectContaining({ name: "Ayesha Khan" }),
+    );
+    // …and the full payload is logged for manual recovery.
+    expect(errorSpy).toHaveBeenCalledWith(
+      "[lead] Sanity write failed, payload:",
+      expect.stringContaining("Ayesha Khan"),
+    );
+
+    errorSpy.mockRestore();
   });
 
   it("still returns 202 when Sanity is not configured", async () => {

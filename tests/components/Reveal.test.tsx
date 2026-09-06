@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Reveal } from "@/components/motion/Reveal";
 
 /** Mock matchMedia so `prefers-reduced-motion: reduce` reports true. */
@@ -64,5 +64,64 @@ describe("Reveal (animated motion)", () => {
     );
 
     expect(container.querySelector("[data-reveal]")).not.toBeNull();
+  });
+});
+
+describe("Reveal (animated branch reaches the visible state)", () => {
+  const realGetRect = Element.prototype.getBoundingClientRect;
+
+  beforeEach(() => {
+    mockReducedMotion(false);
+    // A real (non-firing) IntersectionObserver must exist, so Reveal takes the
+    // observer path rather than the "no IO → show immediately" fallback.
+    vi.stubGlobal(
+      "IntersectionObserver",
+      class {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+        takeRecords() {
+          return [];
+        }
+      },
+    );
+  });
+
+  afterEach(() => {
+    Element.prototype.getBoundingClientRect = realGetRect;
+    vi.unstubAllGlobals();
+  });
+
+  it("shows content already scrolled ABOVE the fold on mount (I1 regression)", async () => {
+    // Element sits entirely above the viewport — the situation after a reload
+    // that restores scroll position. Pre-I1 (`rect.bottom > 0` lower bound)
+    // this never qualified and stayed at opacity 0 forever.
+    Element.prototype.getBoundingClientRect = function () {
+      return {
+        top: -600,
+        bottom: -400,
+        left: 0,
+        right: 0,
+        width: 0,
+        height: 200,
+        x: 0,
+        y: -600,
+        toJSON() {},
+      } as DOMRect;
+    };
+
+    const { container } = render(
+      <Reveal>
+        <p>Above-the-fold content</p>
+      </Reveal>,
+    );
+
+    const wrapper = () =>
+      container.querySelector("[data-reveal]") as HTMLElement;
+
+    await waitFor(() => {
+      expect(wrapper().style.opacity).toBe("1");
+    });
+    expect(wrapper().style.transform).toBe("none");
   });
 });

@@ -174,7 +174,7 @@ const listings: ListingSeed[] = [
     location: "F.B Area, Block 15",
     area: { value: 20, unit: "sqyd" },
     description:
-      "A shop for sale in F.B Area, Block 15. Size given as 8 × 5 (we read the '/20' as around 20 sq. yd).",
+      "A shop for sale in F.B Area, Block 15. Size approximately 8 × 5 (about 20 sq. yd).",
     publishedAt: "2026-04-25T00:00:00.000Z",
     source: "F.F Real Estate Facebook post, 25 April",
   },

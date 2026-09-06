@@ -59,6 +59,46 @@ describe("parseLead", () => {
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.errors.preferredContact).toBeTruthy();
   });
+
+  it("rejects an over-max message with an error keyed 'message'", () => {
+    const result = parseLead({ ...valid, message: "x".repeat(4001) });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.message).toBeTruthy();
+  });
+
+  it("accepts a message exactly at the 4000-char limit", () => {
+    const result = parseLead({ ...valid, message: "x".repeat(4000) });
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data.message).toHaveLength(4000);
+  });
+
+  it("rejects an over-max name", () => {
+    const result = parseLead({ ...valid, name: "A".repeat(101) });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.name).toBeTruthy();
+  });
+
+  it("keeps a well-formed relatedPropertyId", () => {
+    const result = parseLead({ ...valid, relatedPropertyId: "property.fb-shop_1" });
+    expect(result.ok).toBe(true);
+    if (result.ok)
+      expect(result.data.relatedPropertyId).toBe("property.fb-shop_1");
+  });
+
+  it("silently drops a malformed relatedPropertyId instead of 400ing", () => {
+    const result = parseLead({
+      ...valid,
+      relatedPropertyId: "drop table properties;",
+    });
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data.relatedPropertyId).toBeUndefined();
+  });
+
+  it("silently drops an over-long relatedPropertyId", () => {
+    const result = parseLead({ ...valid, relatedPropertyId: "a".repeat(129) });
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data.relatedPropertyId).toBeUndefined();
+  });
 });
 
 describe("isSpam", () => {

@@ -106,8 +106,10 @@ export function parsePropertyFilters(
 /**
  * Build the GROQ predicate (without the leading `*[` and without a projection).
  *
- * Always starts `_type == "property" && status == "available"`, then appends
- * one `&& <field> <op> $param` clause per set filter.
+ * Always starts `_type == "property" && status == "available" &&
+ * defined(slug.current)`, then appends one `&& <field> <op> $param` clause per
+ * set filter. The slug guard keeps unlinkable draft rows out of the list,
+ * matching the other collection queries.
  *
  * NOTE: `minPrice` / `maxPrice` compare against `price.amount`, so properties
  * with no numeric amount (price-on-request) are excluded whenever a price
@@ -118,7 +120,11 @@ export function buildPropertyGroqFilter(state: PropertyFilterState): {
   filter: string;
   params: Record<string, unknown>;
 } {
-  const clauses = ['_type == "property"', 'status == "available"'];
+  const clauses = [
+    '_type == "property"',
+    'status == "available"',
+    "defined(slug.current)",
+  ];
   const params: Record<string, unknown> = {};
 
   if (state.purpose) {

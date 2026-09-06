@@ -52,10 +52,10 @@ describe("parsePropertyFilters", () => {
 });
 
 describe("buildPropertyGroqFilter", () => {
-  it("always constrains to available properties", () => {
+  it("always constrains to available, slugged properties", () => {
     const { filter, params } = buildPropertyGroqFilter({});
     expect(filter).toBe(
-      '_type == "property" && status == "available"',
+      '_type == "property" && status == "available" && defined(slug.current)',
     );
     expect(params).toEqual({});
   });
@@ -65,7 +65,9 @@ describe("buildPropertyGroqFilter", () => {
       purpose: "sale",
       bedrooms: 2,
     });
-    expect(filter).toContain('_type == "property" && status == "available"');
+    expect(filter).toContain(
+      '_type == "property" && status == "available" && defined(slug.current)',
+    );
     expect(filter).toContain("purpose == $purpose");
     expect(filter).toContain("bedrooms >= $bedrooms");
     expect(params).toEqual({ purpose: "sale", bedrooms: 2 });

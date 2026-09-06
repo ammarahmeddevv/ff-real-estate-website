@@ -66,7 +66,7 @@ export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
 /* Properties                                                                */
 /* -------------------------------------------------------------------------- */
 
-export const FEATURED_PROPERTIES_QUERY = `*[_type == "property" && featured == true && status == "available"]
+export const FEATURED_PROPERTIES_QUERY = `*[_type == "property" && featured == true && status == "available" && defined(slug.current)]
   | order(publishedAt desc)[0...6]{${PROPERTY_SUMMARY}}`;
 
 export const ALL_PROPERTIES_QUERY = `*[_type == "property" && defined(slug.current)]
@@ -116,7 +116,7 @@ export const PROPERTY_BY_SLUG_QUERY = `*[_type == "property" && slug.current == 
 /* Projects                                                                  */
 /* -------------------------------------------------------------------------- */
 
-export const FEATURED_PROJECTS_QUERY = `*[_type == "project" && featured == true]
+export const FEATURED_PROJECTS_QUERY = `*[_type == "project" && featured == true && defined(slug.current)]
   | order(_createdAt desc)[0...6]{${PROJECT_SUMMARY}}`;
 
 export const ALL_PROJECTS_QUERY = `*[_type == "project" && defined(slug.current)]

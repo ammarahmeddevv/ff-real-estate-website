@@ -49,6 +49,14 @@ export async function sendLeadEmail(data: LeadInput): Promise<void> {
     return;
   }
 
+  // Strip CR/LF (header-injection guard) and cap the length for the subject.
+  const safeName =
+    data.name.replace(/[\r\n]+/g, " ").trim().slice(0, 100) || "website visitor";
+  const replyTo =
+    typeof data.email === "string" && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)
+      ? data.email
+      : undefined;
+
   try {
     const nodemailer = (await import("nodemailer")).default;
     const transport = nodemailer.createTransport({
@@ -59,7 +67,8 @@ export async function sendLeadEmail(data: LeadInput): Promise<void> {
     await transport.sendMail({
       to: process.env.LEAD_NOTIFICATION_EMAIL || user,
       from: user,
-      subject: `New website lead — ${data.name}`,
+      ...(replyTo ? { replyTo } : {}),
+      subject: `New website lead — ${safeName}`,
       text: buildBody(data),
     });
   } catch (error) {
