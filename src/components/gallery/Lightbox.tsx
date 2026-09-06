@@ -63,10 +63,13 @@ export function Lightbox({ images, startIndex, open, onClose }: LightboxProps) {
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
         const active = document.activeElement;
-        if (event.shiftKey && active === first) {
+        // Focus is "outside" the trap when it sits on the dialog container
+        // itself (the state right after open) or has somehow left the root.
+        const outside = active === root || !root.contains(active);
+        if (event.shiftKey && (outside || active === first)) {
           event.preventDefault();
           last.focus();
-        } else if (!event.shiftKey && active === last) {
+        } else if (!event.shiftKey && (outside || active === last)) {
           event.preventDefault();
           first.focus();
         }

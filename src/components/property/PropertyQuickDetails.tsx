@@ -1,22 +1,6 @@
-import type { Property, PropertyStatus, PropertyType } from "@/lib/sanity/types";
+import type { Property } from "@/lib/sanity/types";
 import { formatArea } from "@/lib/format";
-
-const TYPE_LABEL: Record<PropertyType, string> = {
-  house: "House",
-  flat: "Flat / Apartment",
-  plot: "Plot",
-  commercial: "Commercial",
-  office: "Office",
-  shop: "Shop",
-  other: "Property",
-};
-
-const STATUS_LABEL: Record<PropertyStatus, string> = {
-  available: "Available",
-  under_offer: "Under offer",
-  sold: "Sold",
-  rented: "Rented",
-};
+import { STATUS_LABEL, TYPE_LABEL } from "@/lib/property-labels";
 
 interface PropertyQuickDetailsProps {
   property: Property;

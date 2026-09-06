@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,6 +10,7 @@ import {
 } from "@/lib/sanity";
 import type { Property, PortableText as PortableTextValue } from "@/lib/sanity/types";
 import { formatPrice } from "@/lib/format";
+import { TYPE_LABEL, purposeLabel } from "@/lib/property-labels";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { PortableText } from "@/components/content/PortableText";
@@ -19,21 +21,7 @@ import { PropertyInquiryPanel } from "@/components/property/PropertyInquiryPanel
 export const revalidate = 60;
 export const dynamicParams = true;
 
-const TYPE_LABEL: Record<string, string> = {
-  house: "House",
-  flat: "Flat / Apartment",
-  plot: "Plot",
-  commercial: "Commercial",
-  office: "Office",
-  shop: "Shop",
-  other: "Property",
-};
-
 type Params = { slug: string };
-
-function purposeLabel(purpose: Property["purpose"]): string {
-  return purpose === "rent" ? "For Rent" : "For Sale";
-}
 
 function priceText(price: Property["price"]): string {
   return formatPrice({
@@ -69,14 +57,16 @@ function directionsHref(property: Property): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
-async function getProperty(slug: string): Promise<Property | null> {
-  return sanityFetch<Property | null>({
-    query: PROPERTY_BY_SLUG_QUERY,
-    params: { slug },
-    tags: ["property"],
-    fallback: null,
-  });
-}
+// Deduped per request: called by both `generateMetadata` and the page component.
+const getProperty = cache(
+  async (slug: string): Promise<Property | null> =>
+    sanityFetch<Property | null>({
+      query: PROPERTY_BY_SLUG_QUERY,
+      params: { slug },
+      tags: ["property"],
+      fallback: null,
+    }),
+);
 
 export async function generateStaticParams(): Promise<Params[]> {
   const slugs = await sanityFetch<{ slug: string }[]>({

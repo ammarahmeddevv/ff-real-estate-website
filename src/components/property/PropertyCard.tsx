@@ -1,18 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { PropertySummary, PropertyType } from "@/lib/sanity/types";
+import type { PropertySummary } from "@/lib/sanity/types";
 import { formatArea, formatPrice } from "@/lib/format";
 import { ImagelessPanel } from "@/components/ui/ImagelessPanel";
-
-const TYPE_LABEL: Record<PropertyType, string> = {
-  house: "House",
-  flat: "Flat / Apartment",
-  plot: "Plot",
-  commercial: "Commercial",
-  office: "Office",
-  shop: "Shop",
-  other: "Property",
-};
+import { TYPE_LABEL, purposeLabel } from "@/lib/property-labels";
 
 function priceLabel(price: PropertySummary["price"]): string {
   return formatPrice({
@@ -45,7 +36,7 @@ interface PropertyCardProps {
  * in Fraunces and a gold corner mark — never a broken/grey placeholder.
  */
 export function PropertyCard({ property }: PropertyCardProps) {
-  const purposeLabel = property.purpose === "rent" ? "For Rent" : "For Sale";
+  const purpose = purposeLabel(property.purpose);
   const typeLabel = TYPE_LABEL[property.type] ?? "Property";
   const chips = metaChips(property);
   const cover = property.cover;
@@ -74,7 +65,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
         </div>
 
         <div className="px-1 pb-1 pt-4">
-          <p className="u-micro-label">{purposeLabel}</p>
+          <p className="u-micro-label">{purpose}</p>
           <h3 className="mt-1.5 font-display text-lg leading-snug text-ink">
             {property.title}
           </h3>

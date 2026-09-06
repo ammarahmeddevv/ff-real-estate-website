@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Lightbox } from "@/components/gallery/Lightbox";
 
 const images = [
@@ -37,6 +37,22 @@ describe("Lightbox", () => {
 
     fireEvent.keyDown(window, { key: "Escape" });
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("traps focus when Shift+Tab is the first keystroke after opening", async () => {
+    render(
+      <Lightbox images={images} startIndex={0} open onClose={vi.fn()} />,
+    );
+
+    const dialog = screen.getByRole("dialog");
+    // The dialog container takes focus on open (rAF).
+    await waitFor(() => expect(dialog).toHaveFocus());
+
+    // Shift+Tab from the container must not escape the dialog.
+    fireEvent.keyDown(window, { key: "Tab", shiftKey: true });
+
+    expect(dialog.contains(document.activeElement)).toBe(true);
+    expect(document.activeElement).not.toBe(document.body);
   });
 
   it("renders nothing when closed", () => {
