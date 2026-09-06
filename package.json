@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "seed": "npx tsx scripts/seed.ts"
+    "seed": "npx tsx scripts/seed.ts",
+    "seed:listings": "npx tsx scripts/seed-listings.ts"
   },
   "dependencies": {
     "@portabletext/react": "^8.0.1",
