@@ -6,14 +6,22 @@ interface EmptyStateProps {
   body: string;
   ctaHref?: string;
   ctaLabel?: string;
+  headingLevel?: 2 | 3;
 }
 
 /** Calm placeholder for lists with no results yet. */
-export function EmptyState({ title, body, ctaHref, ctaLabel }: EmptyStateProps) {
+export function EmptyState({
+  title,
+  body,
+  ctaHref,
+  ctaLabel,
+  headingLevel = 2,
+}: EmptyStateProps) {
+  const HeadingTag = headingLevel === 3 ? "h3" : "h2";
   return (
     <div className="mx-auto max-w-xl rounded-lg border border-gray-200 bg-paper px-8 py-14 text-center">
       <MicroLabel as="p">Coming soon</MicroLabel>
-      <h3 className="mt-3 font-display text-2xl">{title}</h3>
+      <HeadingTag className="mt-3 font-display text-2xl">{title}</HeadingTag>
       <p className="mt-3 text-sm leading-relaxed text-gray-500">{body}</p>
       {ctaHref && ctaLabel && (
         <div className="mt-6">

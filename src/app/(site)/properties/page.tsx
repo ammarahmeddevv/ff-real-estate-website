@@ -92,7 +92,7 @@ export default async function PropertiesPage({
                 No properties match these filters
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-gray-500">
-                Try widening your budget or area &mdash; or clear the filters to
+                Try widening your budget or filters &mdash; or clear them to
                 see everything currently available.
               </p>
               <div className="mt-6">

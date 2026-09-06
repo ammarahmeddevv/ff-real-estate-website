@@ -163,7 +163,7 @@ export function PropertyFilters({
             </label>
 
             <label>
-              <span className={CONTROL_LABEL}>Area</span>
+              <span className={CONTROL_LABEL}>Location</span>
               <select
                 className={CONTROL}
                 value={current.location ?? ""}
@@ -171,7 +171,7 @@ export function PropertyFilters({
                   push({ location: e.target.value || undefined })
                 }
               >
-                <option value="">Any area</option>
+                <option value="">Any location</option>
                 {locations.map((loc) => (
                   <option key={loc} value={loc}>
                     {loc}

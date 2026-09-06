@@ -90,6 +90,7 @@ export default async function HomePage() {
             body="Message us on WhatsApp to hear about current opportunities."
             ctaHref={whatsappHref}
             ctaLabel="Ask on WhatsApp"
+            headingLevel={3}
           />
         )}
       </Section>
@@ -116,6 +117,7 @@ export default async function HomePage() {
             body="Project details are added as developments progress."
             ctaHref={whatsappHref}
             ctaLabel="Ask on WhatsApp"
+            headingLevel={3}
           />
         )}
       </Section>
