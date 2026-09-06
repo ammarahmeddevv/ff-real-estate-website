@@ -13,6 +13,7 @@ const config: Config = {
         "gold-deep": "var(--gold-deep)",
         "gray-500": "var(--gray-500)",
         "gray-200": "var(--gray-200)",
+        danger: "var(--danger)",
       },
       // Default any bare `border` to transparent instead of Tailwind's built-in
       // gray-200 (#e5e7eb, not one of our tokens). Elements that want a visible

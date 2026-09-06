@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { Property, SiteSettings } from "@/lib/sanity/types";
 import { propertyWhatsAppMessage } from "@/lib/whatsapp";
@@ -14,6 +14,8 @@ interface PropertyInquiryPanelProps {
   settings: SiteSettings;
 }
 
+const TRIGGER_ID = "property-inquiry-trigger";
+
 /**
  * The in-content conversion moment: WhatsApp-first, with a call and a
  * form fallback. Sticky beside the content on desktop, a full-width block
@@ -24,6 +26,24 @@ export function PropertyInquiryPanel({
   settings,
 }: PropertyInquiryPanelProps) {
   const [formOpen, setFormOpen] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
+  // Skip the focus move on first render; only react to user toggles.
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
+    if (formOpen) {
+      const firstField = formRef.current?.querySelector<HTMLElement>(
+        "input, textarea, select",
+      );
+      (firstField ?? formRef.current)?.focus();
+    } else {
+      document.getElementById(TRIGGER_ID)?.focus();
+    }
+  }, [formOpen]);
 
   const agent = property.agent ?? null;
   const whatsappPhone = agent?.whatsapp?.trim() || settings.primaryWhatsapp;
@@ -56,23 +76,27 @@ export function PropertyInquiryPanel({
           {agent ? "Call agent" : "Call us"}
         </Button>
 
-        {!formOpen && (
-          <Button
-            as="button"
-            type="button"
-            variant="ghost"
-            className="w-full justify-center"
-            aria-expanded={false}
-            aria-controls="property-inquiry-form"
-            onClick={() => setFormOpen(true)}
-          >
-            Request information
-          </Button>
-        )}
+        <Button
+          id={TRIGGER_ID}
+          as="button"
+          type="button"
+          variant="ghost"
+          className="w-full justify-center"
+          aria-expanded={formOpen}
+          aria-controls="property-inquiry-form"
+          onClick={() => setFormOpen((open) => !open)}
+        >
+          {formOpen ? "Hide form" : "Request information"}
+        </Button>
       </div>
 
       {formOpen && (
-        <div id="property-inquiry-form" className="mt-6 border-t border-gray-200 pt-5">
+        <div
+          id="property-inquiry-form"
+          ref={formRef}
+          tabIndex={-1}
+          className="mt-6 border-t border-gray-200 pt-5 focus:outline-none"
+        >
           <p className="u-micro-label">Request information</p>
           <p className="mt-1.5 font-sans text-sm leading-relaxed text-gray-500">
             Leave your details and we&rsquo;ll get back to you.
@@ -83,6 +107,7 @@ export function PropertyInquiryPanel({
               relatedPropertyId={property._id}
               whatsappNumber={whatsappPhone}
               whatsappMessage={message}
+              callNumber={callNumber}
               compact
             />
           </div>

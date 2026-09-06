@@ -47,7 +47,7 @@ export function Field(props: FieldProps) {
     undefined;
 
   const borderClass = error
-    ? "border-[#B23B3B]"
+    ? "border-danger"
     : "border-gray-200 hover:border-gold/60";
 
   const commonProps = {
@@ -90,7 +90,7 @@ export function Field(props: FieldProps) {
         </p>
       )}
       {error && (
-        <p id={errorId} className="mt-1 text-xs text-[#B23B3B]">
+        <p id={errorId} className="mt-1 text-xs text-danger">
           {error}
         </p>
       )}

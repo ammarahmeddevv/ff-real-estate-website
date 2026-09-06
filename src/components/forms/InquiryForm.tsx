@@ -16,6 +16,8 @@ interface InquiryFormProps {
   compact?: boolean;
   whatsappNumber?: string;
   whatsappMessage?: string;
+  /** Phone shown as a "Call us" fallback on the error panel. */
+  callNumber?: string;
   onDone?: () => void;
 }
 
@@ -54,6 +56,7 @@ export function InquiryForm({
   compact = false,
   whatsappNumber,
   whatsappMessage,
+  callNumber,
   onDone,
 }: InquiryFormProps) {
   const [fields, setFields] = useState<Fields>(EMPTY);
@@ -219,6 +222,7 @@ export function InquiryForm({
         state={state}
         whatsappPhone={whatsappNumber}
         whatsappMessage={waMessage}
+        callNumber={callNumber}
         errorMessage={formError}
       />
     </form>

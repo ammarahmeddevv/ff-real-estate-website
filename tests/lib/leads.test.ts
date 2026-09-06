@@ -74,9 +74,12 @@ describe("isSpam", () => {
     );
   });
 
-  it("is true when the form was submitted in under 2 seconds", () => {
+  it("is false for a fast submission with a clean honeypot", () => {
+    // Silent drops on timing alone were removed: browser autofill / password
+    // managers submit genuine forms in well under 2s, and a spam verdict loses
+    // the lead. Only the honeypot may trigger the silent-drop path.
     const started = Date.now() - 500;
-    expect(isSpam({ ...base, startedAt: started }, Date.now())).toBe(true);
+    expect(isSpam({ ...base, startedAt: started }, Date.now())).toBe(false);
   });
 
   it("is false after a natural delay with no honeypot", () => {

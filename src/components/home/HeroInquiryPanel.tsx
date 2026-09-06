@@ -10,6 +10,8 @@ import { buildWhatsAppLink } from "@/lib/whatsapp";
 interface HeroInquiryPanelProps {
   /** E.164 WhatsApp number, e.g. `923133694904`. */
   phone: string;
+  /** Phone shown as a "Call us" fallback on the error panel. */
+  callNumber?: string;
 }
 
 type Purpose = "buy" | "rent" | "sell";
@@ -49,7 +51,7 @@ function composeWhatsAppMessage(form: FormState): string {
   return lines.join("\n");
 }
 
-export function HeroInquiryPanel({ phone }: HeroInquiryPanelProps) {
+export function HeroInquiryPanel({ phone, callNumber }: HeroInquiryPanelProps) {
   const [form, setForm] = useState<FormState>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>(
     {},
@@ -223,6 +225,7 @@ export function HeroInquiryPanel({ phone }: HeroInquiryPanelProps) {
         state={state}
         whatsappPhone={phone}
         whatsappMessage={composeWhatsAppMessage(form)}
+        callNumber={callNumber}
         errorMessage={formError}
       />
     </div>

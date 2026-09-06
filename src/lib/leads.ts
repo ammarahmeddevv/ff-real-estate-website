@@ -74,21 +74,22 @@ export function parseLead(input: unknown): ParseResult {
   return { ok: false, errors };
 }
 
-const MIN_SUBMIT_MS = 2000;
-
 /**
- * True for an obvious bot: the honeypot is filled, or the form was submitted
- * implausibly fast. Spam is answered with a fake success (no write, no email).
+ * True only when the honeypot `website` field is filled — a real visitor never
+ * sees it, so a non-empty value is an unambiguous bot signal.
+ *
+ * `startedAt` / `submittedAtMs` stay plumbed for future heuristics, but elapsed
+ * time alone must NEVER classify a submission as spam: browser autofill and
+ * password managers routinely submit a genuine form in well under two seconds,
+ * and a spam classification silently drops the lead (fake 200, no write, no
+ * email, no log). The project's overriding rule is to never lose a real lead.
  */
-export function isSpam(data: LeadInput, submittedAtMs: number): boolean {
-  if (typeof data.website === "string" && data.website.trim() !== "") return true;
-  if (
-    typeof data.startedAt === "number" &&
-    submittedAtMs - data.startedAt < MIN_SUBMIT_MS
-  ) {
-    return true;
-  }
-  return false;
+export function isSpam(
+  data: LeadInput,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  submittedAtMs: number,
+): boolean {
+  return typeof data.website === "string" && data.website.trim() !== "";
 }
 
 export type CreateLeadResult =

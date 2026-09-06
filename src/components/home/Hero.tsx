@@ -98,7 +98,10 @@ export function Hero({ settings }: HeroProps) {
           </div>
 
           <div className="lg:ml-auto lg:w-full">
-            <HeroInquiryPanel phone={settings.primaryWhatsapp} />
+            <HeroInquiryPanel
+              phone={settings.primaryWhatsapp}
+              callNumber={settings.phones[0]?.number ?? settings.primaryWhatsapp}
+            />
           </div>
         </div>
       </Container>

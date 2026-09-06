@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/Button";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { telHref } from "@/lib/phone";
+import { FALLBACK_SITE } from "@/lib/site";
+import { GENERAL_ENQUIRY_MESSAGE } from "@/lib/whatsapp";
 
 export type FormStatusState = "idle" | "submitting" | "success" | "error";
 
@@ -34,6 +36,12 @@ export function FormStatus({
   callNumber,
   errorMessage,
 }: FormStatusProps) {
+  // A bare <InquiryForm> (no explicit contact props) must still leave the
+  // visitor a way through — fall back to the verified primary numbers.
+  const waPhone = whatsappPhone || FALLBACK_SITE.primaryWhatsapp;
+  const waMessage = whatsappMessage || GENERAL_ENQUIRY_MESSAGE;
+  const callTarget = callNumber || FALLBACK_SITE.phones[0]?.number;
+
   return (
     <div aria-live="polite" role="status" className="mt-4">
       {state === "submitting" && (
@@ -48,40 +56,36 @@ export function FormStatus({
           <p className="mt-2 font-sans text-sm leading-relaxed text-gray-500">
             {SUCCESS_COPY}
           </p>
-          {whatsappPhone && (
-            <div className="mt-4">
-              <WhatsAppButton
-                phone={whatsappPhone}
-                message={whatsappMessage}
-                className="w-full"
-              >
-                Continue on WhatsApp
-              </WhatsAppButton>
-            </div>
-          )}
+          <div className="mt-4">
+            <WhatsAppButton
+              phone={waPhone}
+              message={waMessage}
+              className="w-full"
+            >
+              Continue on WhatsApp
+            </WhatsAppButton>
+          </div>
         </div>
       )}
 
       {state === "error" && (
-        <div className="rounded-[6px] border border-[#B23B3B] bg-paper p-5">
+        <div className="rounded-[6px] border border-danger bg-paper p-5">
           <p className="font-sans text-sm leading-relaxed text-ink">
             {errorMessage ||
               "Something went wrong. Please try WhatsApp or call us."}
           </p>
           <div className="mt-4 flex flex-col gap-3">
-            {whatsappPhone && (
-              <WhatsAppButton
-                phone={whatsappPhone}
-                message={whatsappMessage}
-                className="w-full"
-              >
-                Message us on WhatsApp
-              </WhatsAppButton>
-            )}
-            {callNumber && (
+            <WhatsAppButton
+              phone={waPhone}
+              message={waMessage}
+              className="w-full"
+            >
+              Message us on WhatsApp
+            </WhatsAppButton>
+            {callTarget && (
               <Button
                 as="a"
-                href={telHref(callNumber)}
+                href={telHref(callTarget)}
                 variant="outline"
                 className="w-full"
               >
