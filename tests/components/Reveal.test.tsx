@@ -41,4 +41,14 @@ describe("Reveal (reduced motion)", () => {
     expect(wrapper.style.opacity).not.toBe("0");
     expect(wrapper).toBeVisible();
   });
+
+  it("marks its wrapper with data-reveal for the no-JS fallback style", () => {
+    const { container } = render(
+      <Reveal>
+        <p>Revealed content</p>
+      </Reveal>,
+    );
+
+    expect(container.querySelector("[data-reveal]")).not.toBeNull();
+  });
 });

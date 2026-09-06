@@ -37,6 +37,10 @@ interface RevealProps {
  *
  * Under `prefers-reduced-motion` it renders a plain element — visible
  * immediately, no opacity/transform, no listeners.
+ *
+ * The wrapper always carries a `data-reveal` attribute. The global
+ * `<noscript>` style in `app/layout.tsx` targets it to force
+ * `opacity:1; transform:none` when client JS never runs.
  */
 export function Reveal({
   children,
@@ -105,7 +109,11 @@ export function Reveal({
   const Tag = as;
 
   if (reduceMotion) {
-    return <Tag className={className}>{children}</Tag>;
+    return (
+      <Tag data-reveal className={className}>
+        {children}
+      </Tag>
+    );
   }
 
   const style: CSSProperties = {
@@ -115,7 +123,7 @@ export function Reveal({
   };
 
   return (
-    <Tag ref={ref} className={className} style={style}>
+    <Tag ref={ref} data-reveal className={className} style={style}>
       {children}
     </Tag>
   );

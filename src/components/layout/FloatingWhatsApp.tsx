@@ -15,7 +15,7 @@ export function FloatingWhatsApp({ href }: FloatingWhatsAppProps) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with F.F Real Estate on WhatsApp"
-      className="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-ink text-ivory shadow-lg transition-transform duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory md:bottom-6 md:right-6"
+      className="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-ink text-ivory shadow-lg motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory md:bottom-6 md:right-6"
     >
       <span
         aria-hidden="true"

@@ -13,6 +13,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
+      <head>
+        <noscript>
+          {/* Reveal wrappers server-render hidden and rely on client JS to
+              reveal them. Without JS, keep all content visible. */}
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
       <body>{children}</body>
     </html>
   );
