@@ -21,7 +21,8 @@ export function GalleryFilters({ categories }: GalleryFiltersProps) {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const active = searchParams.get("category");
+  const rawCategory = searchParams.get("category");
+  const activeCategory = rawCategory && categories.includes(rawCategory as GalleryCategory) ? rawCategory : null;
 
   const select = useCallback(
     (category: GalleryCategory | null) => {
@@ -41,13 +42,13 @@ export function GalleryFilters({ categories }: GalleryFiltersProps) {
     >
       <ul className="flex flex-wrap gap-2" aria-label="Filter photographs by category">
         <li>
-          <Chip active={!active} onClick={() => select(null)}>
+          <Chip active={!activeCategory} onClick={() => select(null)}>
             All
           </Chip>
         </li>
         {categories.map((category) => (
           <li key={category}>
-            <Chip active={active === category} onClick={() => select(category)}>
+            <Chip active={activeCategory === category} onClick={() => select(category)}>
               {GALLERY_CATEGORY_LABEL[category]}
             </Chip>
           </li>

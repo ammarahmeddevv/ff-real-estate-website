@@ -63,8 +63,7 @@ export default async function GalleryPage({
   return (
     <Container className="py-16 md:py-24">
       <header className="max-w-2xl">
-        <p className="u-micro-label">Gallery</p>
-        <h1 className="mt-3 font-display text-4xl leading-tight md:text-5xl">
+        <h1 className="font-display text-4xl leading-tight md:text-5xl">
           Gallery
         </h1>
         <p className="mt-4 font-sans text-base leading-relaxed text-gray-500">
@@ -77,7 +76,7 @@ export default async function GalleryPage({
 
       {images.length > 0 ? (
         <GalleryGrid images={images} />
-      ) : category ? (
+      ) : category && categories.length > 0 ? (
         <div className="mx-auto mt-10 max-w-xl rounded-lg border border-gray-200 bg-paper px-8 py-12 text-center">
           <p className="u-micro-label">No photos here yet</p>
           <h2 className="mt-3 font-display text-2xl">
