@@ -3,6 +3,7 @@ import { Container } from "@/components/layout/Container";
 import { MicroLabel } from "@/components/ui/MicroLabel";
 import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
+import { LazyMap } from "@/components/layout/LazyMap";
 
 interface LocationBlockProps {
   address: SiteAddress;
@@ -52,7 +53,11 @@ export function LocationBlock({ address, hours }: LocationBlockProps) {
               Near Taal Stop, F.B Area &mdash; Dastagir Society.
             </p>
 
-            {/* Task 14: <LazyMap> */}
+            <LazyMap
+              query={fullAddress}
+              title="F.F Real Estate office"
+              className="mt-6"
+            />
 
             <div className="mt-6">
               <Button

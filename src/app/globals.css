@@ -28,3 +28,6 @@
 }
 
 .u-micro-label { font-family: var(--font-inter), sans-serif; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem; color: var(--gold-deep); }
+
+@keyframes u-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.u-fade-in { animation: u-fade-in 400ms ease both; }

@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/Button";
 import { ImagelessPanel } from "@/components/ui/ImagelessPanel";
 import { PortableText } from "@/components/content/PortableText";
 import { MediaGallery } from "@/components/gallery/MediaGallery";
+import { LazyMap } from "@/components/layout/LazyMap";
 import { PropertyQuickDetails } from "@/components/property/PropertyQuickDetails";
 import { InquiryPanel } from "@/components/property/InquiryPanel";
 
@@ -217,7 +218,22 @@ export default async function PropertyPage({
                   {property.address}
                 </p>
               )}
-              {/* Task 14: <LazyMap map={property.map} /> when property.map is set */}
+              {property.map?.lat != null && property.map?.lng != null ? (
+                <LazyMap
+                  lat={property.map.lat}
+                  lng={property.map.lng}
+                  title={property.title}
+                  className="mt-6"
+                />
+              ) : property.address?.trim() ? (
+                <LazyMap
+                  query={[property.address, property.location, "Karachi"]
+                    .filter((s): s is string => Boolean(s && s.trim()))
+                    .join(", ")}
+                  title={property.title}
+                  className="mt-6"
+                />
+              ) : null}
               <div className="mt-5">
                 <Button
                   as="a"

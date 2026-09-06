@@ -12,9 +12,11 @@ import type { Project } from "@/lib/sanity/types";
 import { PROJECT_STATUS_LABEL } from "@/lib/property-labels";
 import { excerptFromPortableText } from "@/lib/portable-text-excerpt";
 import { Container } from "@/components/layout/Container";
+import { Button } from "@/components/ui/Button";
 import { PortableText } from "@/components/content/PortableText";
 import { ProjectHero } from "@/components/project/ProjectHero";
 import { MediaGallery } from "@/components/gallery/MediaGallery";
+import { LazyMap } from "@/components/layout/LazyMap";
 import { InquiryPanel } from "@/components/property/InquiryPanel";
 
 export const revalidate = 60;
@@ -173,7 +175,34 @@ export default async function ProjectPage({
               </section>
             )}
 
-            {/* Task 14: <LazyMap> if project has coords */}
+            {project.location?.trim() && (
+              <section className="mt-12">
+                <h2 className="font-display text-2xl leading-snug text-ink">
+                  Location
+                </h2>
+                <p className="mt-4 font-sans text-base leading-relaxed text-ink">
+                  {project.location}
+                </p>
+                <LazyMap
+                  query={`${project.location}, Karachi`}
+                  title={project.name}
+                  className="mt-6"
+                />
+                <div className="mt-5">
+                  <Button
+                    as="a"
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      `${project.location}, Karachi`,
+                    )}`}
+                    variant="outline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Get directions
+                  </Button>
+                </div>
+              </section>
+            )}
           </div>
 
           <div className="lg:col-span-1">
