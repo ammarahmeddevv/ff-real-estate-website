@@ -13,7 +13,7 @@
  * Usage:  npm run seed:listings
  *
  * Run `npm run seed` first if you want these listings linked to the F.F
- * contacts — it creates `agent.mustafa`. The agent reference here is weak, so
+ * contacts — it creates `agent-mustafa`. The agent reference here is weak, so
  * the order is not required, but without it the listings have no linked agent.
  *
  * Required environment (from `.env.local`, `.env`, or the shell):
@@ -122,7 +122,11 @@ function body(id: string, text: string) {
 }
 
 interface ListingSeed {
-  /** id without the `drafts.` prefix — added when the doc is built. */
+  /**
+   * Document id without the `drafts.` prefix (added when the doc is built).
+   * Must not contain a "." — Sanity treats any non-`drafts.` dotted id as a
+   * private document that the tokenless public site cannot read.
+   */
   id: string;
   title: string;
   slug: string;
@@ -142,8 +146,8 @@ interface ListingSeed {
 
 const listings: ListingSeed[] = [
   {
-    id: "property.fb-240-portion-rent",
-    title: "240 sq. yd 2nd-Floor Portion — For Rent",
+    id: "property-fb-240-portion-rent",
+    title: "240 sq. yd 2nd-Floor Portion",
     slug: "240-sq-yd-2nd-floor-portion-for-rent-fb-area",
     purpose: "rent",
     type: "flat",
@@ -166,8 +170,8 @@ const listings: ListingSeed[] = [
     source: "F.F Real Estate Facebook post, 21 May",
   },
   {
-    id: "property.fb-shop-sale-block-15",
-    title: "Shop for Sale — F.B Area, Block 15",
+    id: "property-fb-shop-sale-block-15",
+    title: "Shop — F.B Area, Block 15",
     slug: "shop-for-sale-fb-area-block-15",
     purpose: "sale",
     type: "shop",
@@ -179,8 +183,8 @@ const listings: ListingSeed[] = [
     source: "F.F Real Estate Facebook post, 25 April",
   },
   {
-    id: "property.fb-ground-floor-corner-sale",
-    title: "Ground-Floor Corner Portion — For Sale",
+    id: "property-fb-ground-floor-corner-sale",
+    title: "Ground-Floor Corner Portion",
     slug: "ground-floor-corner-portion-for-sale-fb-area",
     purpose: "sale",
     type: "flat",
@@ -198,8 +202,8 @@ const listings: ListingSeed[] = [
     source: "F.F Real Estate Facebook post, 25 April",
   },
   {
-    id: "property.fb-second-floor-park-facing-sale",
-    title: "Second-Floor Portion, Park-Facing — For Sale",
+    id: "property-fb-second-floor-park-facing-sale",
+    title: "Second-Floor Portion, Park-Facing",
     slug: "second-floor-portion-park-facing-for-sale-fb-area",
     purpose: "sale",
     type: "flat",
@@ -241,8 +245,8 @@ function buildDoc(l: ListingSeed) {
     ...(l.highlights ? { highlights: l.highlights } : {}),
     // No gallery — the posts carried no photos we may reuse.
     // Weak reference: the seed does not require `npm run seed` (which creates
-    // agent.mustafa) to have run first. Run it first to link the F.F contacts.
-    agent: { _type: "reference", _ref: "agent.mustafa", _weak: true },
+    // agent-mustafa) to have run first. Run it first to link the F.F contacts.
+    agent: { _type: "reference", _ref: "agent-mustafa", _weak: true },
     featured: false,
     publishedAt: l.publishedAt,
   };

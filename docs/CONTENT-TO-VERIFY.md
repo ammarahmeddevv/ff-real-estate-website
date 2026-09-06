@@ -9,22 +9,24 @@ business hours are the two things worth doing first.
 
 ---
 
-## 1. The four draft property listings — review, then publish
+## 1. The four property listings — review the live pages
 
 We turned four genuine posts from your Facebook page (facebook.com/F.F.REBAD) into
-**draft** listings. They are **not live** yet. You decide what goes public.
+listings. They have been **published** and now appear on the site's **Properties**
+page and each has its own detail page. Review each one and adjust anything that is
+wrong, or unpublish any you don't want public.
 
 > **For the developer — seed run order:** run `npm run seed` first (it creates the
 > agent/contact records), then `npm run seed:listings`. The listings' agent link is
 > a weak reference, so the reverse order also works, but running `seed` first is
-> what links each draft to the F.F contacts.
+> what links each listing to the F.F contacts.
 
-| # | Listing (as it will appear) | What the site will show | Source post |
-|---|------------------------------|--------------------------|-------------|
-| 1 | **240 sq. yd 2nd-Floor Portion — For Rent** | For rent · Flat/portion · 240 sq. yd · 3 bed · F.B Area, Block 15 · "Price on request" | Your Facebook post, 21 May |
-| 2 | **Shop for Sale — F.B Area, Block 15** | For sale · Shop · approx. 20 sq. yd (8 × 5) · F.B Area, Block 15 · "Price on request" | Your Facebook post, 25 April |
-| 3 | **Ground-Floor Corner Portion — For Sale** | For sale · Flat/portion · 2 bed · F.B Area, Block 15 · "Price on request" | Your Facebook post, 25 April |
-| 4 | **Second-Floor Portion, Park-Facing — For Sale** | For sale · Flat/portion · 3 bed · F.B Area, Block 15 · "Price on request" | Your Facebook post, 25 April |
+| # | Listing | What the site shows | Source post |
+|---|---------|---------------------|-------------|
+| 1 | **240 sq. yd 2nd-Floor Portion** | For rent · Flat/portion · 240 sq. yd · 3 bed · F.B Area, Block 15 · "Price on request" | Your Facebook post, 21 May |
+| 2 | **Shop — F.B Area, Block 15** | For sale · Shop · approx. 20 sq. yd (8 × 5) · F.B Area, Block 15 · "Price on request" | Your Facebook post, 25 April |
+| 3 | **Ground-Floor Corner Portion** | For sale · Flat/portion · 2 bed · F.B Area, Block 15 · "Price on request" | Your Facebook post, 25 April |
+| 4 | **Second-Floor Portion, Park-Facing** | For sale · Flat/portion · 3 bed · F.B Area, Block 15 · "Price on request" | Your Facebook post, 25 April |
 
 Notes on what we did and did not assume:
 
@@ -46,21 +48,25 @@ Notes on what we did and did not assume:
 - We did **not** use the phone number `0334 4890901` that appears on some of these
   posts — see section 4.
 
-**To publish each one:**
+**To review / adjust each one:**
 
 1. Open `/studio` on the site and sign in.
-2. Go to **Properties**. The four drafts are listed (marked as drafts / unpublished).
+2. Go to **Properties**. All four are listed and published.
 3. Open a listing and check every field against your original post.
-4. Correct anything that is wrong.
+4. Correct anything that is wrong, then press **Publish** again to save.
 5. **Add photos** (drag them into the Gallery; each photo needs a short alt text).
 6. Set a **price**, or leave "Price on request" on.
-7. Turn on **Featured** if you want it on the homepage.
-8. Click **Publish**.
+7. Turn on **Featured** to also show it in the "Featured properties" block on the
+   home page. (Without it, the listing still appears on the Properties page — the
+   home page block just stays as a "coming soon" panel until at least one listing
+   is featured.)
+8. To take a listing down, open it and choose **Unpublish**.
 
-- [ ] Listing 1 reviewed and published (or deliberately kept as a draft)
-- [ ] Listing 2 reviewed and published
-- [ ] Listing 3 reviewed and published
-- [ ] Listing 4 reviewed and published
+- [ ] Listing 1 reviewed
+- [ ] Listing 2 reviewed
+- [ ] Listing 3 reviewed
+- [ ] Listing 4 reviewed
+- [ ] Decided which listings (if any) to mark **Featured** for the home page
 
 ---
 

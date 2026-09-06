@@ -260,8 +260,11 @@ const services: ServiceSeed[] = [
   },
 ];
 
+// Document ids must NOT contain a "." — Sanity's Content Lake treats any
+// non-`drafts.` dotted id as a *private* document that the tokenless public
+// API/CDN will not return, which hides the doc from the live website.
 const serviceDocs = services.map((s) => ({
-  _id: `service.${s.slug}`,
+  _id: `service-${s.slug}`,
   _type: "service",
   title: s.title,
   slug: { _type: "slug", current: s.slug },
@@ -272,7 +275,7 @@ const serviceDocs = services.map((s) => ({
 
 const agentDocs = [
   {
-    _id: "agent.mustafa",
+    _id: "agent-mustafa",
     _type: "agent",
     name: "Syed Mustafa Rehman",
     role: "Property Consultant",
@@ -280,7 +283,7 @@ const agentDocs = [
     whatsapp: "923133694904",
   },
   {
-    _id: "agent.salman",
+    _id: "agent-salman",
     _type: "agent",
     name: "Mohammad Salman",
     role: "Property Consultant",
