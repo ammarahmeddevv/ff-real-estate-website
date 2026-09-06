@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
 import {
   ALL_PROJECTS_QUERY,
   getSiteSettings,
   sanityFetch,
 } from "@/lib/sanity";
+import { buildMetadata } from "@/lib/metadata";
 import type { ProjectSummary } from "@/lib/sanity/types";
 import { GENERAL_ENQUIRY_MESSAGE, buildWhatsAppLink } from "@/lib/whatsapp";
 import { Container } from "@/components/layout/Container";
@@ -12,13 +12,12 @@ import { ProjectGrid } from "@/components/project/ProjectGrid";
 
 export const revalidate = 60;
 
-export function generateMetadata(): Metadata {
-  return {
-    title: "Projects & Developments in Karachi",
-    description:
-      "F.F Real Estate Builder & Developers undertakes construction and development work in Karachi. Developments are published here as they progress.",
-  };
-}
+export const metadata = buildMetadata({
+  title: "Projects & Developments in Karachi",
+  description:
+    "F.F Real Estate Builder & Developers undertakes construction and development work in Karachi. Developments are published here as they progress.",
+  path: "/projects",
+});
 
 export default async function ProjectsPage() {
   const [settings, projects] = await Promise.all([

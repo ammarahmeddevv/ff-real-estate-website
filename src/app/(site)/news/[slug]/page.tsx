@@ -13,6 +13,8 @@ import type { NewsPost } from "@/lib/sanity/types";
 import { NEWS_CATEGORY_LABEL } from "@/lib/property-labels";
 import { formatDate } from "@/lib/format";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { SITE_URL, articleJsonLd, buildMetadata } from "@/lib/metadata";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { PortableText } from "@/components/content/PortableText";
@@ -51,10 +53,11 @@ export async function generateMetadata({
   const post = await getPost(slug);
 
   if (!post) {
-    return {
-      description:
-        "News and market updates from F.F Real Estate in Karachi.",
-    };
+    return buildMetadata({
+      title: "Update not found",
+      description: "News and market updates from F.F Real Estate in Karachi.",
+      path: `/news/${slug}`,
+    });
   }
 
   const description =
@@ -62,16 +65,14 @@ export async function generateMetadata({
     `${NEWS_CATEGORY_LABEL[post.category] ?? "Update"} from F.F Real Estate, Karachi.`;
   const ogImage = post.coverImage?.url ?? undefined;
 
-  return {
+  const meta = buildMetadata({
     title: post.title,
     description,
-    openGraph: {
-      title: post.title,
-      description,
-      type: "article",
-      ...(ogImage ? { images: [{ url: ogImage }] } : {}),
-    },
-  };
+    path: `/news/${post.slug}`,
+    image: ogImage,
+  });
+  meta.openGraph = { ...meta.openGraph, type: "article" };
+  return meta;
 }
 
 export default async function NewsArticlePage({
@@ -91,10 +92,11 @@ export default async function NewsArticlePage({
     phone: settings.primaryWhatsapp,
     message: `Hello F.F Real Estate, I have a question about your update: "${post.title}".`,
   });
+  const canonicalUrl = new URL(`/news/${post.slug}`, SITE_URL).toString();
 
   return (
     <article className="pb-20 pt-8 md:pt-12">
-      {/* Task 17: Article JSON-LD */}
+      <JsonLd data={articleJsonLd(post, canonicalUrl)} />
       <Container>
         <nav className="mb-6 font-sans text-sm text-gray-500">
           <Link href="/news" className="transition-colors hover:text-gold-deep">

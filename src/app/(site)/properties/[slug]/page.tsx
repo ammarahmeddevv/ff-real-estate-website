@@ -13,6 +13,8 @@ import { formatPrice } from "@/lib/format";
 import { TYPE_LABEL, purposeLabel } from "@/lib/property-labels";
 import { excerptFromPortableText } from "@/lib/portable-text-excerpt";
 import { propertyWhatsAppMessage } from "@/lib/whatsapp";
+import { SITE_URL, buildMetadata, residenceJsonLd } from "@/lib/metadata";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { ImagelessPanel } from "@/components/ui/ImagelessPanel";
@@ -73,10 +75,12 @@ export async function generateMetadata({
   const property = await getProperty(slug);
 
   if (!property) {
-    return {
+    return buildMetadata({
+      title: "Property not found",
       description:
         "Browse the property F.F Real Estate is representing across Karachi.",
-    };
+      path: `/properties/${slug}`,
+    });
   }
 
   const purpose = purposeLabel(property.purpose);
@@ -87,16 +91,12 @@ export async function generateMetadata({
 
   const ogImage = property.gallery?.find((img) => img?.url)?.url ?? undefined;
 
-  return {
+  return buildMetadata({
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      ...(ogImage ? { images: [{ url: ogImage }] } : {}),
-    },
-  };
+    path: `/properties/${property.slug}`,
+    image: ogImage,
+  });
 }
 
 export default async function PropertyPage({
@@ -129,10 +129,14 @@ export default async function PropertyPage({
     property.title,
     property.location,
   );
+  const canonicalUrl = new URL(
+    `/properties/${property.slug}`,
+    SITE_URL,
+  ).toString();
 
   return (
     <article className="pb-20 pt-8 md:pt-12">
-      {/* Task 17: JSON-LD (Residence / offers) */}
+      <JsonLd data={residenceJsonLd(property, canonicalUrl)} />
       <Container>
         <nav className="mb-6 font-sans text-sm text-gray-500">
           <Link

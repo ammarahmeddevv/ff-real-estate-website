@@ -1,6 +1,8 @@
 import { getSiteSettings, hasNews } from "@/lib/sanity";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { telHref } from "@/lib/phone";
+import { realEstateAgentJsonLd } from "@/lib/metadata";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { Nav } from "@/components/nav/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
@@ -32,6 +34,7 @@ export default async function SiteLayout({
 
   return (
     <>
+      <JsonLd data={realEstateAgentJsonLd(settings)} />
       <a
         href="#content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:rounded-[6px] focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-ivory"

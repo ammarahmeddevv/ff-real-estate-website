@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { getSiteSettings } from "@/lib/sanity";
+import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/layout/Container";
 import { MicroLabel } from "@/components/ui/MicroLabel";
 import { Reveal } from "@/components/motion/Reveal";
@@ -11,13 +11,12 @@ export const revalidate = 60;
 const WHY_WHATSAPP_MESSAGE =
   "Hello F.F Real Estate, I'd like to speak with someone about a property.";
 
-export function generateMetadata(): Metadata {
-  return {
-    title: "Why Choose F.F",
-    description:
-      "Local knowledge in F.B Area and Dastagir, one team for the whole transaction, and direct contact with Syed Mustafa Rehman and Mohammad Salman.",
-  };
-}
+export const metadata = buildMetadata({
+  title: "Why Choose F.F",
+  description:
+    "Local knowledge in F.B Area and Dastagir, one team for the whole transaction, and direct contact with Syed Mustafa Rehman and Mohammad Salman.",
+  path: "/why-ff",
+});
 
 export default async function WhyFFPage() {
   const settings = await getSiteSettings();

@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
 import { SERVICES_QUERY, getSiteSettings, sanityFetch } from "@/lib/sanity";
 import type { Service } from "@/lib/sanity/types";
+import { buildMetadata } from "@/lib/metadata";
 import { FALLBACK_SERVICES } from "@/lib/services";
 import { Container } from "@/components/layout/Container";
 import { MicroLabel } from "@/components/ui/MicroLabel";
@@ -13,13 +13,12 @@ export const revalidate = 60;
 const SERVICES_WHATSAPP_MESSAGE =
   "Hello F.F Real Estate, I'd like to speak with someone about a property.";
 
-export function generateMetadata(): Metadata {
-  return {
-    title: "Our Services",
-    description:
-      "Property buying, selling, renting, renovation, documentation and consultation in Karachi — handled by one F.F Real Estate team from first enquiry to handover.",
-  };
-}
+export const metadata = buildMetadata({
+  title: "Our Services",
+  description:
+    "Property buying, selling, renting, renovation, documentation and consultation in Karachi — handled by one F.F Real Estate team from first enquiry to handover.",
+  path: "/services",
+});
 
 export default async function ServicesPage() {
   const [settings, cmsServices] = await Promise.all([

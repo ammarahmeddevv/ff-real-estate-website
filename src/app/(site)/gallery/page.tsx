@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
 import {
   GALLERY_CATEGORIES_QUERY,
   GALLERY_QUERY,
   getSiteSettings,
   sanityFetch,
 } from "@/lib/sanity";
+import { buildMetadata } from "@/lib/metadata";
 import type { GalleryCategory, GalleryImage } from "@/lib/sanity/types";
 import { GALLERY_CATEGORIES } from "@/lib/property-labels";
 import { Container } from "@/components/layout/Container";
@@ -14,13 +14,12 @@ import { GalleryGrid } from "@/components/gallery/GalleryGrid";
 
 export const revalidate = 60;
 
-export function generateMetadata(): Metadata {
-  return {
-    title: "Gallery",
-    description:
-      "Photographs of the properties, developments and neighbourhoods F.F Real Estate Builder & Developers works with across Karachi.",
-  };
-}
+export const metadata = buildMetadata({
+  title: "Gallery",
+  description:
+    "Photographs of the properties, developments and neighbourhoods F.F Real Estate Builder & Developers works with across Karachi.",
+  path: "/gallery",
+});
 
 type SearchParams = Record<string, string | string[] | undefined>;
 

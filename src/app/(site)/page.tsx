@@ -26,8 +26,16 @@ import { AboutTeaser } from "@/components/home/AboutTeaser";
 import { LatestFromFF } from "@/components/home/LatestFromFF";
 import { LocationBlock } from "@/components/home/LocationBlock";
 import { ContactCta } from "@/components/home/ContactCta";
+import { buildMetadata } from "@/lib/metadata";
 
 export const revalidate = 60;
+
+export const metadata = buildMetadata({
+  title: "Property in F.B Area, Dastagir & Across Karachi",
+  description:
+    "F.F Real Estate Builder & Developers — buying, selling, renting, renovation and property documentation in F.B Area, Dastagir Society and across Karachi.",
+  path: "/",
+});
 
 export default async function HomePage() {
   const [settings, properties, projects, services, news] = await Promise.all([

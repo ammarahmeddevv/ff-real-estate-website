@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { getSiteSettings } from "@/lib/sanity";
+import { buildMetadata } from "@/lib/metadata";
 import { GENERAL_ENQUIRY_MESSAGE } from "@/lib/whatsapp";
 import { telHref } from "@/lib/phone";
 import { Container } from "@/components/layout/Container";
@@ -21,13 +21,12 @@ const SOCIAL_LABELS: Record<string, string> = {
   other: "Facebook",
 };
 
-export function generateMetadata(): Metadata {
-  return {
-    title: "Contact",
-    description:
-      "Contact F.F Real Estate in F.B Area, Dastagir Society, Karachi. Message us on WhatsApp, call Syed Mustafa Rehman or Mohammad Salman, email, or send an enquiry. Office at R-37, Block 15, near Taal Stop.",
-  };
-}
+export const metadata = buildMetadata({
+  title: "Contact",
+  description:
+    "Contact F.F Real Estate in F.B Area, Dastagir Society, Karachi. Message us on WhatsApp, call Syed Mustafa Rehman or Mohammad Salman, email, or send an enquiry. Office at R-37, Block 15, near Taal Stop.",
+  path: "/contact",
+});
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();

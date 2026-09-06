@@ -1,11 +1,11 @@
 import { Suspense } from "react";
-import type { Metadata } from "next";
 import {
   PROPERTY_LOCATIONS_QUERY,
   getSiteSettings,
   propertiesQuery,
   sanityFetch,
 } from "@/lib/sanity";
+import { buildMetadata } from "@/lib/metadata";
 import type { PropertySummary } from "@/lib/sanity/types";
 import {
   activeFilterChips,
@@ -21,13 +21,12 @@ import { PropertyGrid } from "@/components/property/PropertyGrid";
 
 export const revalidate = 60;
 
-export function generateMetadata(): Metadata {
-  return {
-    title: "Properties for Sale & Rent in Karachi",
-    description:
-      "Browse the property F.F Real Estate is representing across Karachi — F.B Area, Dastagir, Scheme 33 and Scheme 45. Filter by purpose, type, budget, size and area.",
-  };
-}
+export const metadata = buildMetadata({
+  title: "Properties for Sale & Rent in Karachi",
+  description:
+    "Browse the property F.F Real Estate is representing across Karachi — F.B Area, Dastagir, Scheme 33 and Scheme 45. Filter by purpose, type, budget, size and area.",
+  path: "/properties",
+});
 
 type SearchParams = Record<string, string | string[] | undefined>;
 

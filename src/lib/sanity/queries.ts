@@ -69,7 +69,7 @@ export const SITE_SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
 export const FEATURED_PROPERTIES_QUERY = `*[_type == "property" && featured == true && status == "available"]
   | order(publishedAt desc)[0...6]{${PROPERTY_SUMMARY}}`;
 
-export const ALL_PROPERTIES_QUERY = `*[_type == "property"]
+export const ALL_PROPERTIES_QUERY = `*[_type == "property" && defined(slug.current)]
   | order(featured desc, publishedAt desc){${PROPERTY_SUMMARY}}`;
 
 /**
@@ -119,7 +119,7 @@ export const PROPERTY_BY_SLUG_QUERY = `*[_type == "property" && slug.current == 
 export const FEATURED_PROJECTS_QUERY = `*[_type == "project" && featured == true]
   | order(_createdAt desc)[0...6]{${PROJECT_SUMMARY}}`;
 
-export const ALL_PROJECTS_QUERY = `*[_type == "project"]
+export const ALL_PROJECTS_QUERY = `*[_type == "project" && defined(slug.current)]
   | order(featured desc, _createdAt desc){${PROJECT_SUMMARY}}`;
 
 export const PROJECT_SLUGS_QUERY = `*[_type == "project" && defined(slug.current)]{ "slug": slug.current }`;
@@ -156,7 +156,7 @@ export const SERVICES_QUERY = `*[_type == "service"]
 /* News                                                                      */
 /* -------------------------------------------------------------------------- */
 
-export const NEWS_LIST_QUERY = `*[_type == "newsPost"]
+export const NEWS_LIST_QUERY = `*[_type == "newsPost" && defined(slug.current)]
   | order(publishedAt desc){${NEWS_SUMMARY}}`;
 
 export const NEWS_SLUGS_QUERY = `*[_type == "newsPost" && defined(slug.current)]{ "slug": slug.current }`;

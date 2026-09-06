@@ -1,19 +1,18 @@
-import type { Metadata } from "next";
 import { NEWS_LIST_QUERY, getSiteSettings, sanityFetch } from "@/lib/sanity";
 import type { NewsSummary } from "@/lib/sanity/types";
+import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/layout/Container";
 import { EmptyState } from "@/components/EmptyState";
 import { NewsGrid } from "@/components/news/NewsGrid";
 
 export const revalidate = 60;
 
-export function generateMetadata(): Metadata {
-  return {
-    title: "News & Market Updates",
-    description:
-      "New listings, project news and property-market notes from F.F Real Estate in F.B Area, Dastagir and across Karachi.",
-  };
-}
+export const metadata = buildMetadata({
+  title: "News & Market Updates",
+  description:
+    "New listings, project news and property-market notes from F.F Real Estate in F.B Area, Dastagir and across Karachi.",
+  path: "/news",
+});
 
 export default async function NewsPage() {
   const [settings, posts] = await Promise.all([

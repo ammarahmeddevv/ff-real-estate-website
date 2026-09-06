@@ -11,6 +11,7 @@ import {
 import type { Project } from "@/lib/sanity/types";
 import { PROJECT_STATUS_LABEL } from "@/lib/property-labels";
 import { excerptFromPortableText } from "@/lib/portable-text-excerpt";
+import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
 import { PortableText } from "@/components/content/PortableText";
@@ -53,10 +54,12 @@ export async function generateMetadata({
   const project = await getProject(slug);
 
   if (!project) {
-    return {
+    return buildMetadata({
+      title: "Project not found",
       description:
         "F.F Real Estate Builder & Developers undertakes construction and development work in Karachi.",
-    };
+      path: `/projects/${slug}`,
+    });
   }
 
   const typeLabel = project.projectType?.trim() || "Development";
@@ -70,16 +73,12 @@ export async function generateMetadata({
     project.gallery?.find((img) => img?.url)?.url ??
     undefined;
 
-  return {
+  return buildMetadata({
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      type: "website",
-      ...(ogImage ? { images: [{ url: ogImage }] } : {}),
-    },
-  };
+    path: `/projects/${project.slug}`,
+    image: ogImage,
+  });
 }
 
 export default async function ProjectPage({
@@ -107,7 +106,6 @@ export default async function ProjectPage({
 
   return (
     <article className="pb-20">
-      {/* Task 17: JSON-LD */}
       <ProjectHero project={project} />
 
       <Container className="pt-8 md:pt-12">

@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { getSiteSettings } from "@/lib/sanity";
+import { buildMetadata } from "@/lib/metadata";
 import { Container } from "@/components/layout/Container";
 import { MicroLabel } from "@/components/ui/MicroLabel";
 import { Reveal } from "@/components/motion/Reveal";
@@ -11,13 +11,12 @@ export const revalidate = 60;
 const ABOUT_WHATSAPP_MESSAGE =
   "Hello F.F Real Estate, I'd like to speak with someone about a property.";
 
-export function generateMetadata(): Metadata {
-  return {
-    title: "About Us",
-    description:
-      "F.F Real Estate Builder & Developers is a Karachi property service — buying, selling, renting, renovation and documentation, handled by one team in F.B Area and Dastagir Society.",
-  };
-}
+export const metadata = buildMetadata({
+  title: "About Us",
+  description:
+    "F.F Real Estate Builder & Developers is a Karachi property service — buying, selling, renting, renovation and documentation, handled by one team in F.B Area and Dastagir Society.",
+  path: "/about",
+});
 
 export default async function AboutPage() {
   const settings = await getSiteSettings();
