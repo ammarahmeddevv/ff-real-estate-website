@@ -72,6 +72,21 @@ export const FEATURED_PROPERTIES_QUERY = `*[_type == "property" && featured == t
 export const ALL_PROPERTIES_QUERY = `*[_type == "property"]
   | order(featured desc, publishedAt desc){${PROPERTY_SUMMARY}}`;
 
+/**
+ * Listing query for `/properties`. `filter` comes from
+ * `buildPropertyGroqFilter` in `src/lib/filters.ts` — a fixed whitelist of
+ * clauses with every value bound as a GROQ parameter, so interpolating it
+ * here is safe.
+ */
+export function propertiesQuery(filter: string): string {
+  return `*[${filter}] | order(featured desc, publishedAt desc){${PROPERTY_SUMMARY}}`;
+}
+
+/** Distinct, defined `location` values across available properties. */
+export const PROPERTY_LOCATIONS_QUERY = `array::unique(
+  *[_type == "property" && status == "available" && defined(location)].location
+)`;
+
 export const PROPERTY_SLUGS_QUERY = `*[_type == "property" && defined(slug.current)]{ "slug": slug.current }`;
 
 export const PROPERTY_BY_SLUG_QUERY = `*[_type == "property" && slug.current == $slug][0]{
