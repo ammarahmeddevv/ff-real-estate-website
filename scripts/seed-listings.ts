@@ -12,6 +12,10 @@
  *
  * Usage:  npm run seed:listings
  *
+ * Run `npm run seed` first if you want these listings linked to the F.F
+ * contacts — it creates `agent.mustafa`. The agent reference here is weak, so
+ * the order is not required, but without it the listings have no linked agent.
+ *
  * Required environment (from `.env.local`, `.env`, or the shell):
  *   - NEXT_PUBLIC_SANITY_PROJECT_ID   real Sanity project id
  *   - NEXT_PUBLIC_SANITY_DATASET      dataset name (defaults to "production")
@@ -87,6 +91,8 @@ if (!projectIdLooksReal || !token) {
       "Create the token at https://www.sanity.io/manage → API → Tokens.",
       "Then re-run:  npm run seed:listings",
       "",
+      "Run `npm run seed` first if you want these listings linked to the F.F contacts.",
+      "",
       "The four listings are created as DRAFTS — review and publish each one",
       "in the Studio (Properties). See docs/CONTENT-TO-VERIFY.md.",
       "",
@@ -143,6 +149,7 @@ const listings: ListingSeed[] = [
     type: "flat",
     location: "F.B Area, Block 15",
     bedrooms: 3,
+    // inferred: 3 attached + 1 common washroom (post doesn't give a total)
     bathrooms: 4,
     area: { value: 240, unit: "sqyd" },
     highlights: [
@@ -167,7 +174,7 @@ const listings: ListingSeed[] = [
     location: "F.B Area, Block 15",
     area: { value: 20, unit: "sqyd" },
     description:
-      "A shop for sale in F.B Area, Block 15. Approximately 8 × 5 (around 20 sq. yd).",
+      "A shop for sale in F.B Area, Block 15. Size given as 8 × 5 (we read the '/20' as around 20 sq. yd).",
     publishedAt: "2026-04-25T00:00:00.000Z",
     source: "F.F Real Estate Facebook post, 25 April",
   },
@@ -181,12 +188,12 @@ const listings: ListingSeed[] = [
     bedrooms: 2,
     highlights: [
       "Ground floor corner",
-      "Double door (D.D)",
+      "Drawing & dining room (D.D)",
       "Attached washrooms",
       "Sub-leased",
     ],
     description:
-      "A sub-leased ground-floor corner portion in F.B Area, Block 15, available for sale. Two bedrooms, double door (D.D), with attached washrooms.",
+      "A sub-leased ground-floor corner portion in F.B Area, Block 15, available for sale. Two bedrooms with attached washrooms and a drawing and dining room (D.D).",
     publishedAt: "2026-04-25T00:00:00.000Z",
     source: "F.F Real Estate Facebook post, 25 April",
   },
@@ -203,11 +210,11 @@ const listings: ListingSeed[] = [
       "Park facing",
       "Second floor (with or without roof)",
       "Single belt",
-      "Double door (D.D)",
+      "Drawing & dining room (D.D)",
       "Attached washrooms",
     ],
     description:
-      "A west-open, park-facing second-floor portion in F.B Area, Block 15, available for sale — with or without roof. Three bedrooms, double door (D.D), with attached washrooms, on a single belt.",
+      "A west-open, park-facing second-floor portion in F.B Area, Block 15, available for sale — with or without roof. Three bedrooms with attached washrooms, a drawing and dining room (D.D), on a single belt.",
     publishedAt: "2026-04-25T00:00:00.000Z",
     source: "F.F Real Estate Facebook post, 25 April",
   },
@@ -233,7 +240,9 @@ function buildDoc(l: ListingSeed) {
     description: body(l.id, l.description),
     ...(l.highlights ? { highlights: l.highlights } : {}),
     // No gallery — the posts carried no photos we may reuse.
-    agent: { _type: "reference", _ref: "agent.mustafa" },
+    // Weak reference: the seed does not require `npm run seed` (which creates
+    // agent.mustafa) to have run first. Run it first to link the F.F contacts.
+    agent: { _type: "reference", _ref: "agent.mustafa", _weak: true },
     featured: false,
     publishedAt: l.publishedAt,
   };

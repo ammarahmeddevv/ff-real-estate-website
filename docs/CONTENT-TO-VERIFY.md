@@ -14,6 +14,11 @@ business hours are the two things worth doing first.
 We turned four genuine posts from your Facebook page (facebook.com/F.F.REBAD) into
 **draft** listings. They are **not live** yet. You decide what goes public.
 
+> **For the developer — seed run order:** run `npm run seed` first (it creates the
+> agent/contact records), then `npm run seed:listings`. The listings' agent link is
+> a weak reference, so the reverse order also works, but running `seed` first is
+> what links each draft to the F.F contacts.
+
 | # | Listing (as it will appear) | What the site will show | Source post |
 |---|------------------------------|--------------------------|-------------|
 | 1 | **240 sq. yd 2nd-Floor Portion — For Rent** | For rent · Flat/portion · 240 sq. yd · 3 bed · F.B Area, Block 15 · "Price on request" | Your Facebook post, 21 May |
@@ -31,8 +36,12 @@ Notes on what we did and did not assume:
   "1 common washroom", so we entered **4** bathrooms. Correct this if that reading
   is wrong.
 - **Listing 2 — size.** The post said "Size 8*5/20". We entered **20 sq. yd** and
-  also wrote "approx. 8 × 5 (around 20 sq. yd)" into the description so nothing is
-  lost. Fix the number if it should be different.
+  wrote "Size given as 8 × 5 (we read the '/20' as around 20 sq. yd)" into the
+  description so the exact figure from the post is kept as-is. Fix the number if it
+  should be different.
+- **Post dates.** We recorded these as **2026** (Facebook showed no year, which
+  usually means the current year). If a post is actually from 2025, correct the
+  "Published" date on that listing in the Studio.
 - **Agent.** All four are attached to **Syed Mustafa Rehman**. Change to Mohammad
   Salman on any listing if that is who handles it.
 - We did **not** use the phone number `0334 4890901` that appears on some of these
