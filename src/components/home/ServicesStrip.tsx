@@ -1,0 +1,110 @@
+import Link from "next/link";
+import type { Service } from "@/lib/sanity/types";
+import { Container } from "@/components/layout/Container";
+import { MicroLabel } from "@/components/ui/MicroLabel";
+import { Reveal } from "@/components/motion/Reveal";
+
+/**
+ * The six confirmed F.F Real Estate services. Copy mirrors `scripts/seed.ts`
+ * so the page reads identically whether or not the CMS is connected.
+ */
+const FALLBACK_SERVICES: { title: string; summary: string }[] = [
+  {
+    title: "Property Buying",
+    summary:
+      "Shortlisted options that match your budget, area and purpose, with viewings arranged and paperwork handled.",
+  },
+  {
+    title: "Property Selling",
+    summary:
+      "Your property priced against current local sales, listed to buyers, and guided through to a completed transfer.",
+  },
+  {
+    title: "Property Rentals",
+    summary:
+      "Rental homes and units matched to tenants, and landlords connected with screened renters on a clear agreement.",
+  },
+  {
+    title: "Renovation",
+    summary:
+      "Repair and renovation work organised with trusted local tradespeople, from a single room to a full property refresh.",
+  },
+  {
+    title: "Documentation",
+    summary:
+      "Property paperwork prepared and processed correctly — sale deeds, transfers, mutation and related records.",
+  },
+  {
+    title: "Property Consultation",
+    summary:
+      "A sit-down to talk through your options, timing and budget before you commit to buying, selling or renting.",
+  },
+];
+
+interface ServicesStripProps {
+  services: Service[];
+}
+
+/**
+ * Editorial list of what F.F Real Estate does, on ink. Uses CMS services when
+ * present, otherwise the six confirmed fallbacks. Every item links to
+ * `/services`.
+ */
+export function ServicesStrip({ services }: ServicesStripProps) {
+  const items =
+    services.length > 0
+      ? services.map((service) => ({
+          title: service.title,
+          summary: service.summary?.trim() ?? "",
+        }))
+      : FALLBACK_SERVICES;
+
+  return (
+    <section className="bg-ink py-20 text-ivory md:py-28">
+      <Container>
+        <Reveal>
+          <MicroLabel as="p" className="!text-gold">
+            What We Do
+          </MicroLabel>
+          <h2 className="mt-3 max-w-2xl font-display text-3xl leading-tight md:text-4xl">
+            Property services, handled by one team
+          </h2>
+        </Reveal>
+
+        <Reveal delay={0.08} className="mt-12 md:mt-16">
+          <ul className="grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((item) => (
+              <li key={item.title}>
+                <Link
+                  href="/services"
+                  className="group block border-t border-gold/30 pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-ink"
+                >
+                  <h3 className="font-display text-xl leading-snug text-ivory">
+                    {item.title}
+                  </h3>
+                  {item.summary && (
+                    <p className="mt-2 text-sm leading-relaxed text-ivory/65">
+                      {item.summary}
+                    </p>
+                  )}
+                  <span className="mt-3 inline-flex items-center gap-1 text-sm text-ivory/45 transition-colors group-hover:text-gold">
+                    Learn more <span aria-hidden="true">&rarr;</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <Reveal delay={0.12} className="mt-12">
+          <Link
+            href="/services"
+            className="inline-flex items-center gap-1 font-sans text-sm text-gold underline-offset-4 hover:underline"
+          >
+            All services <span aria-hidden="true">&rarr;</span>
+          </Link>
+        </Reveal>
+      </Container>
+    </section>
+  );
+}

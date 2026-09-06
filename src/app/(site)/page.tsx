@@ -1,10 +1,17 @@
 import {
   FEATURED_PROJECTS_QUERY,
   FEATURED_PROPERTIES_QUERY,
+  NEWS_LIST_QUERY,
+  SERVICES_QUERY,
   getSiteSettings,
   sanityFetch,
 } from "@/lib/sanity";
-import type { ProjectSummary, PropertySummary } from "@/lib/sanity/types";
+import type {
+  NewsSummary,
+  ProjectSummary,
+  PropertySummary,
+  Service,
+} from "@/lib/sanity/types";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/Button";
@@ -13,6 +20,12 @@ import { Hero } from "@/components/home/Hero";
 import { TrustBar } from "@/components/home/TrustBar";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { ProjectGrid } from "@/components/project/ProjectGrid";
+import { ServicesStrip } from "@/components/home/ServicesStrip";
+import { WhyFF } from "@/components/home/WhyFF";
+import { AboutTeaser } from "@/components/home/AboutTeaser";
+import { LatestFromFF } from "@/components/home/LatestFromFF";
+import { LocationBlock } from "@/components/home/LocationBlock";
+import { ContactCta } from "@/components/home/ContactCta";
 
 export const revalidate = 60;
 
@@ -20,7 +33,7 @@ const LEAD_WHATSAPP_MESSAGE =
   "Hello F.F Real Estate, I'd like to ask about a property.";
 
 export default async function HomePage() {
-  const [settings, properties, projects] = await Promise.all([
+  const [settings, properties, projects, services, news] = await Promise.all([
     getSiteSettings(),
     sanityFetch<PropertySummary[]>({
       query: FEATURED_PROPERTIES_QUERY,
@@ -32,6 +45,16 @@ export default async function HomePage() {
       tags: ["project"],
       fallback: [],
     }),
+    sanityFetch<Service[]>({
+      query: SERVICES_QUERY,
+      tags: ["service"],
+      fallback: [],
+    }),
+    sanityFetch<NewsSummary[]>({
+      query: NEWS_LIST_QUERY,
+      tags: ["newsPost"],
+      fallback: [],
+    }),
   ]);
 
   const whatsappHref = buildWhatsAppLink({
@@ -41,6 +64,7 @@ export default async function HomePage() {
 
   const featuredProperties = properties.slice(0, 6);
   const featuredProjects = projects.slice(0, 6);
+  const newsPosts = news.slice(0, 3);
 
   return (
     <>
@@ -75,6 +99,8 @@ export default async function HomePage() {
         id="projects"
         label="Projects & Developments"
         title="Builder and developer projects"
+        tone="ivory"
+        className="border-t border-gray-200"
       >
         {featuredProjects.length > 0 ? (
           <>
@@ -95,7 +121,12 @@ export default async function HomePage() {
         )}
       </Section>
 
-      {/* TODO Task 8b: ServicesStrip, WhyFF, AboutTeaser, LatestFromFF, LocationBlock, ContactCta */}
+      <ServicesStrip services={services} />
+      <WhyFF items={settings.whyFF} phone={settings.primaryWhatsapp} />
+      <AboutTeaser />
+      <LatestFromFF newsPosts={newsPosts} socials={settings.socials} />
+      <LocationBlock address={settings.address} hours={settings.hours} />
+      <ContactCta phone={settings.primaryWhatsapp} phones={settings.phones} />
     </>
   );
 }

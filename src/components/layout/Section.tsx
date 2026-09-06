@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Container } from "./Container";
 import { MicroLabel } from "@/components/ui/MicroLabel";
 
-type Tone = "light" | "dark";
+type Tone = "light" | "dark" | "ivory";
 
 interface SectionProps {
   id?: string;
@@ -15,6 +15,7 @@ interface SectionProps {
 
 const TONE: Record<Tone, string> = {
   light: "bg-paper text-ink",
+  ivory: "bg-ivory text-ink",
   dark: "bg-ink text-ivory",
 };
 

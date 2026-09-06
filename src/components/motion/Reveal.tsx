@@ -2,7 +2,6 @@
 
 import type { CSSProperties, ElementType, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
 import { useReducedMotionSafe } from "./useReducedMotionSafe";
 
 interface RevealProps {
@@ -25,13 +24,16 @@ interface RevealProps {
  * Fades and rises its children in — on mount when `immediate`, otherwise on
  * first viewport entry.
  *
- * The transition is driven by plain React state + a CSS transition (not a
- * rAF-based animation library), so it still resolves when the tab is
- * backgrounded at load or the IntersectionObserver is suspended. A ~600ms mount
- * failsafe force-shows anything at or above the fold that has not revealed yet,
- * so hero/above-the-fold content is NEVER left permanently invisible. Content
- * genuinely below the fold is untouched by the failsafe and still reveals on
- * scroll.
+ * The reveal is driven by plain React state + a CSS transition (no rAF-based
+ * animation library) and a **native `IntersectionObserver`**, so it resolves
+ * even when the tab is backgrounded at load. Because
+ * `useReducedMotionSafe()` returns `true` for the first render, the observed
+ * element only mounts its `ref` on the second render; the observer effect
+ * therefore keys off `reduceMotion` so it (re)runs once the ref is attached.
+ *
+ * Safety nets: an at-mount visibility check shows anything already on screen,
+ * and a ~1.2s failsafe shows anything still at/above the fold. Genuinely
+ * below-the-fold content is untouched by both and still reveals on scroll.
  *
  * Under `prefers-reduced-motion` it renders a plain element — visible
  * immediately, no opacity/transform, no listeners.
@@ -46,35 +48,65 @@ export function Reveal({
 }: RevealProps) {
   const reduceMotion = useReducedMotionSafe();
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
-  const [armed, setArmed] = useState(false);
-  const [failsafe, setFailsafe] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Arm the enter transition one tick after mount so `immediate` content
-    // transitions from the hidden state rather than snapping in.
-    const arm = setTimeout(() => setArmed(true), 30);
-    // Hard guarantee: anything at/above the fold is shown even if neither the
-    // mount arm nor the observer ever fires (suspended tab, lost callback).
+    if (reduceMotion || visible) return;
+
+    if (immediate) {
+      const t = setTimeout(() => setVisible(true), 30);
+      return () => clearTimeout(t);
+    }
+
+    const el = ref.current;
+    if (!el) return;
+
+    const withinFold = (ratio: number) => {
+      const rect = el.getBoundingClientRect();
+      return rect.bottom > 0 && rect.top < window.innerHeight * ratio;
+    };
+
+    // Already on screen when the observer is wired up (above-the-fold, fast
+    // loads, or a re-render after the ref attaches).
+    if (withinFold(0.92)) {
+      setVisible(true);
+      return;
+    }
+
+    let observer: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            setVisible(true);
+            observer?.disconnect();
+          }
+        },
+        { rootMargin: "0px 0px -10% 0px" },
+      );
+      observer.observe(el);
+    } else {
+      setVisible(true);
+      return;
+    }
+
+    // Never leave at/above-the-fold content hidden if the observer callback is
+    // delayed or dropped (suspended tab, etc.).
     const guard = setTimeout(() => {
-      const el = ref.current;
-      if (!el || el.getBoundingClientRect().top < window.innerHeight) {
-        setFailsafe(true);
-      }
-    }, 600);
+      if (withinFold(1)) setVisible(true);
+    }, 1200);
+
     return () => {
-      clearTimeout(arm);
+      observer?.disconnect();
       clearTimeout(guard);
     };
-  }, []);
+  }, [reduceMotion, immediate, visible]);
 
   const Tag = as;
 
   if (reduceMotion) {
     return <Tag className={className}>{children}</Tag>;
   }
-
-  const visible = failsafe || (armed && (immediate || inView));
 
   const style: CSSProperties = {
     opacity: visible ? 1 : 0,
