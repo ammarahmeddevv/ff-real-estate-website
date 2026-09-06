@@ -33,7 +33,7 @@ export function LatestFromFF({ newsPosts, socials }: LatestFromFFProps) {
   )?.url;
 
   return (
-    <section className="border-t border-gray-200 bg-paper py-20 text-ink md:py-28">
+    <section className="border-t border-gold/30 bg-ivory pb-20 pt-24 text-ink md:pb-28 md:pt-32">
       <Container>
         <Reveal>
           <MicroLabel as="p">Updates</MicroLabel>
@@ -51,7 +51,7 @@ export function LatestFromFF({ newsPosts, socials }: LatestFromFFProps) {
                   <li key={post._id}>
                     <Link
                       href={`/news/${post.slug}`}
-                      className="group block border-t border-gray-200 pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                      className="group block border-t border-gray-200 pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
                     >
                       {date && (
                         <p className="font-sans text-xs uppercase tracking-[0.1em] text-gray-500">

@@ -46,9 +46,9 @@ interface ServicesStripProps {
 }
 
 /**
- * Editorial list of what F.F Real Estate does, on ink. Uses CMS services when
+ * Editorial list of what F.F Real Estate does, on ivory. Uses CMS services when
  * present, otherwise the six confirmed fallbacks. Every item links to
- * `/services`.
+ * `/services`. A gold hairline at the top marks the seam from the section above.
  */
 export function ServicesStrip({ services }: ServicesStripProps) {
   const items =
@@ -60,12 +60,10 @@ export function ServicesStrip({ services }: ServicesStripProps) {
       : FALLBACK_SERVICES;
 
   return (
-    <section className="bg-ink py-20 text-ivory md:py-28">
+    <section className="border-t border-gold/30 bg-ivory pb-20 pt-24 text-ink md:pb-28 md:pt-32">
       <Container>
         <Reveal>
-          <MicroLabel as="p" className="!text-gold">
-            What We Do
-          </MicroLabel>
+          <MicroLabel as="p">What We Do</MicroLabel>
           <h2 className="mt-3 max-w-2xl font-display text-3xl leading-tight md:text-4xl">
             Property services, handled by one team
           </h2>
@@ -77,17 +75,17 @@ export function ServicesStrip({ services }: ServicesStripProps) {
               <li key={item.title}>
                 <Link
                   href="/services"
-                  className="group block border-t border-gold/30 pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-ink"
+                  className="group block border-t border-gold/40 pt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-ivory"
                 >
-                  <h3 className="font-display text-xl leading-snug text-ivory">
+                  <h3 className="font-display text-xl leading-snug text-ink">
                     {item.title}
                   </h3>
                   {item.summary && (
-                    <p className="mt-2 text-sm leading-relaxed text-ivory/65">
+                    <p className="mt-2 text-sm leading-relaxed text-ink/70">
                       {item.summary}
                     </p>
                   )}
-                  <span className="mt-3 inline-flex items-center gap-1 text-sm text-ivory/45 transition-colors group-hover:text-gold">
+                  <span className="mt-3 inline-flex items-center gap-1 text-sm text-gray-500 transition-colors group-hover:text-gold-deep">
                     Learn more <span aria-hidden="true">&rarr;</span>
                   </span>
                 </Link>
@@ -99,7 +97,7 @@ export function ServicesStrip({ services }: ServicesStripProps) {
         <Reveal delay={0.12} className="mt-12">
           <Link
             href="/services"
-            className="inline-flex items-center gap-1 font-sans text-sm text-gold underline-offset-4 hover:underline"
+            className="inline-flex items-center gap-1 font-sans text-sm text-gold-deep underline-offset-4 hover:underline"
           >
             All services <span aria-hidden="true">&rarr;</span>
           </Link>

@@ -12,7 +12,7 @@ export function TrustBar({ items }: TrustBarProps) {
   if (items.length === 0) return null;
 
   return (
-    <div className="border-b border-gray-200 bg-ivory">
+    <div className="bg-ivory">
       <Container>
         <ul className="flex flex-wrap items-center justify-center gap-y-2 py-4 text-center font-sans text-sm tracking-wide text-gray-500">
           {items.map((item, i) => (

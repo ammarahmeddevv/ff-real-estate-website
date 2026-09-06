@@ -18,7 +18,6 @@
     "@sanity/client": "^7.27.0",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^4.22.1",
-    "framer-motion": "^13.2.0",
     "next": "15.5.25",
     "next-sanity": "^11.6.13",
     "nodemailer": "^10.0.0",

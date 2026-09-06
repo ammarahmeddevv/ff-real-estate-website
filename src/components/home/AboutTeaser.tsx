@@ -9,9 +9,10 @@ import { Reveal } from "@/components/motion/Reveal";
  */
 export function AboutTeaser() {
   return (
-    <section className="border-t border-gray-200 bg-ivory py-20 text-ink md:py-28">
+    <section className="bg-ivory py-20 text-ink md:py-28">
       <Container>
         <Reveal className="max-w-3xl">
+          <h2 className="sr-only">About F.F Real Estate</h2>
           <MicroLabel as="p">About</MicroLabel>
           <p className="mt-5 font-display text-xl leading-relaxed md:text-2xl md:leading-[1.55]">
             F.F Real Estate is a Karachi property service based in F.B Area,

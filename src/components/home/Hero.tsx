@@ -3,13 +3,10 @@ import { Button } from "@/components/ui/Button";
 import { MicroLabel } from "@/components/ui/MicroLabel";
 import { WhatsAppGlyph } from "@/components/ui/WhatsAppGlyph";
 import { Reveal } from "@/components/motion/Reveal";
-import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { GENERAL_ENQUIRY_MESSAGE, buildWhatsAppLink } from "@/lib/whatsapp";
 import type { SiteSettings } from "@/lib/sanity/types";
 import { HeroElevation } from "./HeroElevation";
 import { HeroInquiryPanel } from "./HeroInquiryPanel";
-
-const HERO_WHATSAPP_MESSAGE =
-  "Hello F.F Real Estate, I'd like to ask about a property.";
 
 interface HeroProps {
   settings: SiteSettings;
@@ -24,7 +21,7 @@ export function Hero({ settings }: HeroProps) {
   const { hero } = settings;
   const whatsappHref = buildWhatsAppLink({
     phone: settings.primaryWhatsapp,
-    message: HERO_WHATSAPP_MESSAGE,
+    message: GENERAL_ENQUIRY_MESSAGE,
   });
 
   return (

@@ -32,10 +32,11 @@ export function LocationBlock({ address, hours }: LocationBlockProps) {
     )}`;
 
   return (
-    <section className="border-t border-gray-200 bg-ivory py-20 text-ink md:py-28">
+    <section className="border-t border-gold/30 bg-ivory pb-20 pt-24 text-ink md:pb-28 md:pt-32">
       <Container>
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal>
+            <h2 className="sr-only">Visit F.F Real Estate</h2>
             <MicroLabel as="p">Visit Us</MicroLabel>
             <p className="mt-5 font-display text-3xl leading-tight md:text-4xl">
               {address.line1 && (

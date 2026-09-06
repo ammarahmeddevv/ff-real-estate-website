@@ -56,10 +56,8 @@ export function NavShell({ links, phones, whatsappHref, callHref }: NavShellProp
       />
       <header
         className={[
-          "fixed inset-x-0 top-0 z-50 transition-[padding,background-color,box-shadow] duration-300",
-          scrolled
-            ? "border-b border-gray-200 bg-ivory/85 py-2 shadow-[0_1px_0_rgba(17,17,19,0.04)] backdrop-blur-md"
-            : "bg-ivory py-4",
+          "fixed inset-x-0 top-0 z-50 bg-ivory transition-[padding] duration-300",
+          scrolled ? "border-b border-gray-200 py-2" : "py-4",
         ].join(" ")}
       >
         <div className="mx-auto flex max-w-content items-center justify-between px-5 md:px-8">

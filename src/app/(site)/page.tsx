@@ -12,7 +12,7 @@ import type {
   PropertySummary,
   Service,
 } from "@/lib/sanity/types";
-import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { GENERAL_ENQUIRY_MESSAGE, buildWhatsAppLink } from "@/lib/whatsapp";
 import { Section } from "@/components/layout/Section";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/EmptyState";
@@ -28,9 +28,6 @@ import { LocationBlock } from "@/components/home/LocationBlock";
 import { ContactCta } from "@/components/home/ContactCta";
 
 export const revalidate = 60;
-
-const LEAD_WHATSAPP_MESSAGE =
-  "Hello F.F Real Estate, I'd like to ask about a property.";
 
 export default async function HomePage() {
   const [settings, properties, projects, services, news] = await Promise.all([
@@ -59,7 +56,7 @@ export default async function HomePage() {
 
   const whatsappHref = buildWhatsAppLink({
     phone: settings.primaryWhatsapp,
-    message: LEAD_WHATSAPP_MESSAGE,
+    message: GENERAL_ENQUIRY_MESSAGE,
   });
 
   const featuredProperties = properties.slice(0, 6);
@@ -74,7 +71,9 @@ export default async function HomePage() {
       <Section
         id="featured-properties"
         label="Featured Properties"
-        title="A selection of what F.F Real Estate is working on"
+        title="Homes, plots and commercial space we're representing"
+        tone="ivory"
+        className="border-t border-gold/30 pt-24 md:pt-32"
       >
         {featuredProperties.length > 0 ? (
           <>
@@ -100,7 +99,7 @@ export default async function HomePage() {
         label="Projects & Developments"
         title="Builder and developer projects"
         tone="ivory"
-        className="border-t border-gray-200"
+        className="border-t border-gold/30 pt-24 md:pt-32"
       >
         {featuredProjects.length > 0 ? (
           <>

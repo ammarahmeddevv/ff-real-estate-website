@@ -4,9 +4,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { telHref } from "@/lib/phone";
-
-const CONTACT_WHATSAPP_MESSAGE =
-  "Hello F.F Real Estate, I'd like to ask about a property.";
+import { GENERAL_ENQUIRY_MESSAGE } from "@/lib/whatsapp";
 
 interface ContactCtaProps {
   phone: string;
@@ -33,7 +31,7 @@ export function ContactCta({ phone, phones }: ContactCtaProps) {
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <WhatsAppButton
               phone={phone}
-              message={CONTACT_WHATSAPP_MESSAGE}
+              message={GENERAL_ENQUIRY_MESSAGE}
               tone="dark"
               variant="solid"
               className="w-full px-7 py-3 text-base sm:w-auto"
