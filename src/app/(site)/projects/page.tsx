@@ -14,7 +14,7 @@ export const revalidate = 60;
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Projects & Developments in Karachi | F.F Real Estate",
+    title: "Projects & Developments in Karachi",
     description:
       "F.F Real Estate Builder & Developers undertakes construction and development work in Karachi. Developments are published here as they progress.",
   };

@@ -1,24 +1,41 @@
 "use client";
 
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { useState } from "react";
 import type { SanityImage } from "@/lib/sanity/types";
-import { ImagelessPanel } from "@/components/ui/ImagelessPanel";
 import { Lightbox } from "@/components/gallery/Lightbox";
 
-interface PropertyGalleryProps {
+interface MediaGalleryProps {
   images: SanityImage[];
-  /** Friendly property type, shown large when there are no photos. */
-  typeLabel: string;
+  /** Used for the lead-image alt fallback and the viewer aria-labels. */
   title: string;
+  /**
+   * Rendered in place of the gallery when there are no usable images.
+   * When omitted, nothing is rendered (the caller guards the section).
+   */
+  emptyState?: ReactNode;
+  /** Mark the lead image as LCP-priority (detail pages where it is above the fold). */
+  priority?: boolean;
+  /** `sizes` for the lead image; thumbnails use a fixed value. */
+  leadSizes?: string;
+  /** Adds the wide `lg:aspect-[21/9]` lead ratio (used on the property page). */
+  wide?: boolean;
 }
 
 /**
  * Lead image plus a thumbnail strip; any thumbnail opens the focus-trapped
- * `<Lightbox>` at that index. With no gallery photos it falls back to the
- * composed ink panel at a hero ratio — never a broken grey box.
+ * `<Lightbox>` at that index. Shared by the property and project detail pages —
+ * the only difference is the empty state, which each page supplies.
  */
-export function PropertyGallery({ images, typeLabel, title }: PropertyGalleryProps) {
+export function MediaGallery({
+  images,
+  title,
+  emptyState,
+  priority = false,
+  leadSizes = "(min-width: 1024px) 760px, 100vw",
+  wide = false,
+}: MediaGalleryProps) {
   const usable = images.filter((img): img is SanityImage & { url: string } =>
     Boolean(img?.url),
   );
@@ -27,13 +44,7 @@ export function PropertyGallery({ images, typeLabel, title }: PropertyGalleryPro
     index: 0,
   });
 
-  if (usable.length === 0) {
-    return (
-      <div className="relative aspect-[16/10] overflow-hidden rounded-[6px] border border-gray-200 sm:aspect-[16/9] lg:aspect-[21/9]">
-        <ImagelessPanel label={typeLabel} />
-      </div>
-    );
-  }
+  if (usable.length === 0) return <>{emptyState ?? null}</>;
 
   const lead = usable[0];
   const rest = usable.slice(1);
@@ -44,14 +55,16 @@ export function PropertyGallery({ images, typeLabel, title }: PropertyGalleryPro
         type="button"
         onClick={() => setLightbox({ open: true, index: 0 })}
         aria-label={`Open ${title} gallery, image 1 of ${usable.length}`}
-        className="group relative block aspect-[16/10] w-full overflow-hidden rounded-[6px] border border-gray-200 sm:aspect-[16/9] lg:aspect-[21/9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
+        className={`group relative block aspect-[16/10] w-full overflow-hidden rounded-[6px] border border-gray-200 sm:aspect-[16/9]${
+          wide ? " lg:aspect-[21/9]" : ""
+        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-ivory`}
       >
         <Image
           src={lead.url}
           alt={lead.alt || title}
           fill
-          priority
-          sizes="(min-width: 1024px) 1160px, 100vw"
+          priority={priority}
+          sizes={leadSizes}
           placeholder={lead.lqip ? "blur" : "empty"}
           blurDataURL={lead.lqip ?? undefined}
           className="object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-[1.02]"

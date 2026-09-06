@@ -8,40 +8,19 @@ import {
   getSiteSettings,
   sanityFetch,
 } from "@/lib/sanity";
-import type {
-  Project,
-  PortableText as PortableTextValue,
-} from "@/lib/sanity/types";
+import type { Project } from "@/lib/sanity/types";
 import { PROJECT_STATUS_LABEL } from "@/lib/property-labels";
+import { excerptFromPortableText } from "@/lib/portable-text-excerpt";
 import { Container } from "@/components/layout/Container";
 import { PortableText } from "@/components/content/PortableText";
 import { ProjectHero } from "@/components/project/ProjectHero";
-import { ProjectGallery } from "@/components/project/ProjectGallery";
-import { ProjectInquiryPanel } from "@/components/project/ProjectInquiryPanel";
+import { MediaGallery } from "@/components/gallery/MediaGallery";
+import { InquiryPanel } from "@/components/property/InquiryPanel";
 
 export const revalidate = 60;
 export const dynamicParams = true;
 
 type Params = { slug: string };
-
-/** First ~160 chars of plain text pulled from portable-text blocks. */
-function excerptFromPortableText(
-  value: PortableTextValue | null | undefined,
-  max = 160,
-): string | null {
-  if (!Array.isArray(value)) return null;
-  const text = value
-    .filter((b): b is { _type?: string; children?: { text?: string }[] } =>
-      Boolean(b && typeof b === "object"),
-    )
-    .filter((b) => b._type === "block")
-    .map((b) => (b.children ?? []).map((c) => c.text ?? "").join(""))
-    .join(" ")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (!text) return null;
-  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
-}
 
 // Deduped per request: called by both `generateMetadata` and the page component.
 const getProject = cache(
@@ -73,14 +52,13 @@ export async function generateMetadata({
 
   if (!project) {
     return {
-      title: "Project | F.F Real Estate",
       description:
         "F.F Real Estate Builder & Developers undertakes construction and development work in Karachi.",
     };
   }
 
   const typeLabel = project.projectType?.trim() || "Development";
-  const title = `${project.name} — ${typeLabel} in ${project.location} | F.F Real Estate`;
+  const title = `${project.name} — ${typeLabel} in ${project.location}`;
   const description =
     excerptFromPortableText(project.description) ??
     `${typeLabel} by F.F Real Estate Builder & Developers in ${project.location}, Karachi. Contact us for details.`;
@@ -190,7 +168,7 @@ export default async function ProjectPage({
                   Gallery
                 </h2>
                 <div className="mt-4">
-                  <ProjectGallery images={gallery} title={project.name} />
+                  <MediaGallery images={gallery} title={project.name} />
                 </div>
               </section>
             )}
@@ -199,7 +177,16 @@ export default async function ProjectPage({
           </div>
 
           <div className="lg:col-span-1">
-            <ProjectInquiryPanel project={project} settings={settings} />
+            <InquiryPanel
+              heading="Interested in this project?"
+              whatsappNumber={settings.primaryWhatsapp}
+              whatsappMessage={`Hello, I would like details about the ${project.name} project.`}
+              whatsappCta="WhatsApp about this project"
+              callNumber={
+                settings.phones[0]?.number || settings.primaryWhatsapp
+              }
+              inquirySource={`project:${project.slug}`}
+            />
           </div>
         </div>
       </Container>

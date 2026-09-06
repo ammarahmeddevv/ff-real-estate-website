@@ -2,33 +2,54 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import type { Property, SiteSettings } from "@/lib/sanity/types";
-import { propertyWhatsAppMessage } from "@/lib/whatsapp";
 import { telHref } from "@/lib/phone";
 import { Button } from "@/components/ui/Button";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { InquiryForm } from "@/components/forms/InquiryForm";
 
-interface PropertyInquiryPanelProps {
-  property: Property;
-  settings: SiteSettings;
+interface InquiryPanelProps {
+  /** WhatsApp number for the primary button and the form's WhatsApp fallback. */
+  whatsappNumber: string;
+  /** Prefilled WhatsApp message (also the form's fallback message). */
+  whatsappMessage: string;
+  /** Label on the primary WhatsApp button. */
+  whatsappCta?: string;
+  /** Phone for the "Call" button and the form's error-panel fallback. */
+  callNumber?: string;
+  /** Lead source, e.g. `property:<slug>` / `project:<slug>`. */
+  inquirySource: string;
+  relatedPropertyId?: string;
+  /** Property-only contact block; when present the call button reads "Call agent". */
+  agent?: { name: string; role?: string | null } | null;
+  heading?: string;
+  /** Overrides the derived `id` used for `aria-controls` / focus. */
+  formId?: string;
 }
 
-const TRIGGER_ID = "property-inquiry-trigger";
-
 /**
- * The in-content conversion moment: WhatsApp-first, with a call and a
- * form fallback. Sticky beside the content on desktop, a full-width block
- * on mobile (the global mobile bar still covers scroll-anywhere contact).
+ * The in-content conversion moment: WhatsApp-first, with a call and a form
+ * fallback. Sticky beside the content on desktop, a full-width block on mobile.
+ * Shared by the property and project detail pages.
  */
-export function PropertyInquiryPanel({
-  property,
-  settings,
-}: PropertyInquiryPanelProps) {
+export function InquiryPanel({
+  whatsappNumber,
+  whatsappMessage,
+  whatsappCta = "WhatsApp us",
+  callNumber,
+  inquirySource,
+  relatedPropertyId,
+  agent = null,
+  heading = "Interested in this?",
+  formId,
+}: InquiryPanelProps) {
   const [formOpen, setFormOpen] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
   // Skip the focus move on first render; only react to user toggles.
   const mounted = useRef(false);
+
+  const kind = inquirySource.split(":")[0] || "inquiry";
+  const triggerId = `${kind}-inquiry-trigger`;
+  const resolvedFormId = formId ?? `${kind}-inquiry-form`;
 
   useEffect(() => {
     if (!mounted.current) {
@@ -41,23 +62,15 @@ export function PropertyInquiryPanel({
       );
       (firstField ?? formRef.current)?.focus();
     } else {
-      document.getElementById(TRIGGER_ID)?.focus();
+      document.getElementById(triggerId)?.focus();
     }
-  }, [formOpen]);
+  }, [formOpen, triggerId]);
 
-  const agent = property.agent ?? null;
-  const whatsappPhone = agent?.whatsapp?.trim() || settings.primaryWhatsapp;
-  const callNumber =
-    agent?.phone?.trim() ||
-    settings.phones[0]?.number ||
-    settings.primaryWhatsapp;
-  const message = propertyWhatsAppMessage(property.title, property.location);
+  const callTarget = callNumber?.trim() || whatsappNumber;
 
   return (
     <aside className="rounded-[8px] border border-gray-200 bg-paper p-6 lg:sticky lg:top-24">
-      <h2 className="font-display text-xl leading-snug text-ink">
-        Interested in this property?
-      </h2>
+      <h2 className="font-display text-xl leading-snug text-ink">{heading}</h2>
       <p className="mt-2 font-sans text-sm leading-relaxed text-gray-500">
         Message us on WhatsApp for the fastest reply, or ask us to call you
         back.
@@ -65,25 +78,30 @@ export function PropertyInquiryPanel({
 
       <div className="mt-5 flex flex-col gap-3">
         <WhatsAppButton
-          phone={whatsappPhone}
-          message={message}
+          phone={whatsappNumber}
+          message={whatsappMessage}
           className="w-full"
         >
-          WhatsApp about this property
+          {whatsappCta}
         </WhatsAppButton>
 
-        <Button as="a" href={telHref(callNumber)} variant="outline" className="w-full">
+        <Button
+          as="a"
+          href={telHref(callTarget)}
+          variant="outline"
+          className="w-full"
+        >
           {agent ? "Call agent" : "Call us"}
         </Button>
 
         <Button
-          id={TRIGGER_ID}
+          id={triggerId}
           as="button"
           type="button"
           variant="ghost"
           className="w-full justify-center"
           aria-expanded={formOpen}
-          aria-controls="property-inquiry-form"
+          aria-controls={resolvedFormId}
           onClick={() => setFormOpen((open) => !open)}
         >
           {formOpen ? "Hide form" : "Request information"}
@@ -92,7 +110,7 @@ export function PropertyInquiryPanel({
 
       {formOpen && (
         <div
-          id="property-inquiry-form"
+          id={resolvedFormId}
           ref={formRef}
           tabIndex={-1}
           className="mt-6 border-t border-gray-200 pt-5 focus:outline-none"
@@ -103,11 +121,11 @@ export function PropertyInquiryPanel({
           </p>
           <div className="mt-4">
             <InquiryForm
-              source={`property:${property.slug}`}
-              relatedPropertyId={property._id}
-              whatsappNumber={whatsappPhone}
-              whatsappMessage={message}
-              callNumber={callNumber}
+              source={inquirySource}
+              relatedPropertyId={relatedPropertyId}
+              whatsappNumber={whatsappNumber}
+              whatsappMessage={whatsappMessage}
+              callNumber={callTarget}
               compact
             />
           </div>

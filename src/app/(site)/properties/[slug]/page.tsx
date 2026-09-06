@@ -8,15 +8,18 @@ import {
   getSiteSettings,
   sanityFetch,
 } from "@/lib/sanity";
-import type { Property, PortableText as PortableTextValue } from "@/lib/sanity/types";
+import type { Property } from "@/lib/sanity/types";
 import { formatPrice } from "@/lib/format";
 import { TYPE_LABEL, purposeLabel } from "@/lib/property-labels";
+import { excerptFromPortableText } from "@/lib/portable-text-excerpt";
+import { propertyWhatsAppMessage } from "@/lib/whatsapp";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
+import { ImagelessPanel } from "@/components/ui/ImagelessPanel";
 import { PortableText } from "@/components/content/PortableText";
-import { PropertyGallery } from "@/components/property/PropertyGallery";
+import { MediaGallery } from "@/components/gallery/MediaGallery";
 import { PropertyQuickDetails } from "@/components/property/PropertyQuickDetails";
-import { PropertyInquiryPanel } from "@/components/property/PropertyInquiryPanel";
+import { InquiryPanel } from "@/components/property/InquiryPanel";
 
 export const revalidate = 60;
 export const dynamicParams = true;
@@ -29,25 +32,6 @@ function priceText(price: Property["price"]): string {
     display: price?.display ?? undefined,
     onRequest: price?.onRequest ?? undefined,
   });
-}
-
-/** First ~160 chars of plain text pulled from portable-text blocks. */
-function excerptFromPortableText(
-  value: PortableTextValue | null | undefined,
-  max = 160,
-): string | null {
-  if (!Array.isArray(value)) return null;
-  const text = value
-    .filter((b): b is { _type?: string; children?: { text?: string }[] } =>
-      Boolean(b && typeof b === "object"),
-    )
-    .filter((b) => b._type === "block")
-    .map((b) => (b.children ?? []).map((c) => c.text ?? "").join(""))
-    .join(" ")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (!text) return null;
-  return text.length > max ? `${text.slice(0, max - 1).trimEnd()}…` : text;
 }
 
 function directionsHref(property: Property): string {
@@ -89,14 +73,13 @@ export async function generateMetadata({
 
   if (!property) {
     return {
-      title: "Property | F.F Real Estate",
       description:
         "Browse houses, flats, plots and commercial space represented by F.F Real Estate across Karachi.",
     };
   }
 
   const purpose = purposeLabel(property.purpose);
-  const title = `${property.title} — ${purpose} in ${property.location} | F.F Real Estate`;
+  const title = `${property.title} — ${purpose} in ${property.location}`;
   const description =
     excerptFromPortableText(property.description) ??
     `${TYPE_LABEL[property.type] ?? "Property"} ${purpose.toLowerCase()} in ${property.location}, Karachi. ${priceText(property.price)}. Contact F.F Real Estate for details.`;
@@ -135,6 +118,17 @@ export default async function PropertyPage({
   const hasOverview =
     Array.isArray(property.description) && property.description.length > 0;
 
+  const agent = property.agent ?? null;
+  const whatsappPhone = agent?.whatsapp?.trim() || settings.primaryWhatsapp;
+  const callNumber =
+    agent?.phone?.trim() ||
+    settings.phones[0]?.number ||
+    settings.primaryWhatsapp;
+  const inquiryMessage = propertyWhatsAppMessage(
+    property.title,
+    property.location,
+  );
+
   return (
     <article className="pb-20 pt-8 md:pt-12">
       {/* Task 17: JSON-LD (Residence / offers) */}
@@ -148,10 +142,17 @@ export default async function PropertyPage({
           </Link>
         </nav>
 
-        <PropertyGallery
+        <MediaGallery
           images={property.gallery ?? []}
-          typeLabel={TYPE_LABEL[property.type] ?? "Property"}
           title={property.title}
+          priority
+          wide
+          leadSizes="(min-width: 1024px) 1160px, 100vw"
+          emptyState={
+            <div className="relative aspect-[16/10] overflow-hidden rounded-[6px] border border-gray-200 sm:aspect-[16/9] lg:aspect-[21/9]">
+              <ImagelessPanel label={TYPE_LABEL[property.type] ?? "Property"} />
+            </div>
+          }
         />
 
         <header className="mt-8 max-w-3xl">
@@ -232,7 +233,16 @@ export default async function PropertyPage({
           </div>
 
           <div className="lg:col-span-1">
-            <PropertyInquiryPanel property={property} settings={settings} />
+            <InquiryPanel
+              heading="Interested in this property?"
+              whatsappNumber={whatsappPhone}
+              whatsappMessage={inquiryMessage}
+              whatsappCta="WhatsApp about this property"
+              callNumber={callNumber}
+              inquirySource={`property:${property.slug}`}
+              relatedPropertyId={property._id}
+              agent={agent ? { name: agent.name, role: agent.role } : null}
+            />
           </div>
         </div>
       </Container>
