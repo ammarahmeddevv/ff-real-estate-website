@@ -40,7 +40,9 @@ describe("buildMetadata", () => {
       "F.F Real Estate Builder & Developers",
     );
     expect(meta.openGraph?.locale).toBe("en_PK");
-    expect(meta.twitter?.card).toBe("summary_large_image");
+    expect(
+      (meta.twitter as { card?: string } | null | undefined)?.card,
+    ).toBe("summary_large_image");
   });
 
   it("falls back to the generated OG image route", () => {

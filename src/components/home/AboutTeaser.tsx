@@ -20,6 +20,8 @@ export function AboutTeaser() {
             take care of renovation and property documentation. Every enquiry is
             looked after directly by Syed Mustafa Rehman and Mohammad Salman.
           </p>
+          {/* Standalone "→" navigation link: underline appears on hover.
+              In-sentence links (see contact page) keep the underline at rest. */}
           <Link
             href="/about"
             className="mt-8 inline-flex items-center gap-1 font-sans text-sm text-ink underline decoration-transparent decoration-1 underline-offset-4 transition-colors hover:decoration-gold"

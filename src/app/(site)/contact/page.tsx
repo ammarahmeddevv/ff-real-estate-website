@@ -204,6 +204,9 @@ export default async function ContactPage() {
           {facebook && (
             <p className="mt-12 font-sans text-sm text-gray-500">
               Also on Facebook:{" "}
+              {/* In-sentence link: underline stays visible at rest so it reads
+                  as a link mid-paragraph. Standalone "→" links (home sections)
+                  only underline on hover. */}
               <a
                 href={facebook.url}
                 target="_blank"

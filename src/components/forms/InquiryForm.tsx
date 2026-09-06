@@ -115,11 +115,16 @@ export function InquiryForm({
     }
 
     if (result.kind === "validation") {
-      // Only surface field errors that map to a control the visitor can see —
-      // the Email + Preferred-contact fields are dropped in `compact` mode.
-      const visibleKeys: (keyof Fields)[] = compact
-        ? ["name", "phone", "message"]
-        : ["name", "phone", "email", "message"];
+      // Surface only errors that map to a control the visitor can actually see.
+      // Name, Phone and Message always render; Email + Preferred-contact render
+      // only when not `compact`. Any other key (source, website, _form) falls
+      // through to the generic panel below.
+      const visibleKeys: (keyof Fields)[] = [
+        "name",
+        "phone",
+        "message",
+        ...(compact ? [] : (["email", "preferredContact"] as const)),
+      ];
       const shown: Partial<Record<keyof Fields, string>> = {};
       for (const [key, value] of Object.entries(result.errors)) {
         if (visibleKeys.includes(key as keyof Fields) && typeof value === "string") {
@@ -193,6 +198,7 @@ export function InquiryForm({
               name="preferredContact"
               value={fields.preferredContact}
               onChange={set("preferredContact")}
+              error={errors.preferredContact}
             >
               <option value="">No preference</option>
               <option value="whatsapp">WhatsApp</option>

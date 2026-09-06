@@ -57,6 +57,8 @@ export function ServicesStrip({ services }: ServicesStripProps) {
         </Reveal>
 
         <Reveal delay={0.12} className="mt-12">
+          {/* Standalone "→" navigation link: underline appears on hover.
+              In-sentence links (see contact page) keep the underline at rest. */}
           <Link
             href="/services"
             className="inline-flex items-center gap-1 font-sans text-sm text-ink underline decoration-transparent decoration-1 underline-offset-4 transition-colors hover:decoration-gold"

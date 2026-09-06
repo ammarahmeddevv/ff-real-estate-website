@@ -107,11 +107,24 @@ export function HeroInquiryPanel({ phone, callNumber }: HeroInquiryPanelProps) {
       return;
     }
     if (result.kind === "validation") {
-      // Only "name" and "phone" render an inline error slot in this panel.
+      // Every field this panel renders gets an inline error slot; only keys we
+      // can't map to a visible control (e.g. website, source) fall through to
+      // the generic panel below.
+      const VISIBLE_KEYS: (keyof FormState)[] = [
+        "name",
+        "phone",
+        "propertyInterest",
+        "budget",
+        "purpose",
+        "message",
+      ];
       const shown: Partial<Record<keyof FormState, string>> = {};
       for (const [key, value] of Object.entries(result.errors)) {
-        if ((key === "name" || key === "phone") && typeof value === "string") {
-          shown[key] = value;
+        if (
+          VISIBLE_KEYS.includes(key as keyof FormState) &&
+          typeof value === "string"
+        ) {
+          shown[key as keyof FormState] = value;
         }
       }
       if (Object.keys(shown).length > 0) {
@@ -178,6 +191,7 @@ export function HeroInquiryPanel({ phone, callNumber }: HeroInquiryPanelProps) {
               placeholder="e.g. 2nd floor portion, F.B Area"
               value={form.propertyInterest}
               onChange={set("propertyInterest")}
+              error={errors.propertyInterest}
             />
             <Field
               label="Budget"
@@ -185,6 +199,7 @@ export function HeroInquiryPanel({ phone, callNumber }: HeroInquiryPanelProps) {
               placeholder="e.g. PKR 2.5 Crore"
               value={form.budget}
               onChange={set("budget")}
+              error={errors.budget}
             />
             <Field
               as="select"
@@ -192,6 +207,7 @@ export function HeroInquiryPanel({ phone, callNumber }: HeroInquiryPanelProps) {
               name="purpose"
               value={form.purpose}
               onChange={set("purpose")}
+              error={errors.purpose}
             >
               <option value="buy">Buy</option>
               <option value="rent">Rent</option>
@@ -204,6 +220,7 @@ export function HeroInquiryPanel({ phone, callNumber }: HeroInquiryPanelProps) {
               rows={2}
               value={form.message}
               onChange={set("message")}
+              error={errors.message}
             />
           </div>
 
