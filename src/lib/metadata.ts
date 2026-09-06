@@ -51,7 +51,7 @@ export function buildMetadata({
     description,
     alternates: { canonical },
     openGraph: {
-      title,
+      title: `${title} | F.F Real Estate`,
       description,
       url: canonical,
       siteName: SITE_NAME,
@@ -61,7 +61,7 @@ export function buildMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: `${title} | F.F Real Estate`,
       description,
       images,
     },
@@ -139,7 +139,7 @@ export function residenceJsonLd(property: Property, url: string): JsonLd {
 
   const jsonLd: JsonLd = {
     "@context": "https://schema.org",
-    "@type": "Residence",
+    "@type": "RealEstateListing",
     name: property.title,
     url,
   };

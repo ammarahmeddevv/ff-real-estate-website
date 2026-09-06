@@ -30,12 +30,24 @@ import { buildMetadata } from "@/lib/metadata";
 
 export const revalidate = 60;
 
-export const metadata = buildMetadata({
-  title: "Property in F.B Area, Dastagir & Across Karachi",
+const HOME_TITLE =
+  "F.F Real Estate Builder & Developers — Property in F.B Area, Dastagir & Karachi";
+
+const homeMetadata = buildMetadata({
+  title: HOME_TITLE,
   description:
     "F.F Real Estate Builder & Developers — buying, selling, renting, renovation and property documentation in F.B Area, Dastagir Society and across Karachi.",
   path: "/",
 });
+
+// Homepage title leads with the brand, so bypass the root template's
+// " | F.F Real Estate" suffix (which would double the brand here).
+export const metadata = {
+  ...homeMetadata,
+  title: { absolute: HOME_TITLE },
+  openGraph: { ...homeMetadata.openGraph, title: HOME_TITLE },
+  twitter: { ...homeMetadata.twitter, title: HOME_TITLE },
+};
 
 export default async function HomePage() {
   const [settings, properties, projects, services, news] = await Promise.all([

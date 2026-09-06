@@ -16,10 +16,10 @@ describe("buildMetadata", () => {
     path: "/properties",
   });
 
-  it("keeps the title bare so the root template adds the suffix once", () => {
+  it("keeps the <title> bare but brands the og/twitter titles", () => {
     expect(meta.title).toBe("Properties");
-    expect(meta.openGraph?.title).toBe("Properties");
-    expect(meta.twitter?.title).toBe("Properties");
+    expect(meta.openGraph?.title).toBe("Properties | F.F Real Estate");
+    expect(meta.twitter?.title).toBe("Properties | F.F Real Estate");
   });
 
   it("builds an absolute canonical URL ending with the path", () => {
@@ -134,7 +134,7 @@ const baseProperty: Property = {
 describe("residenceJsonLd", () => {
   it("describes the residence with the first gallery image", () => {
     const jsonLd = residenceJsonLd(baseProperty, `${SITE_URL}/properties/x`);
-    expect(jsonLd["@type"]).toBe("Residence");
+    expect(jsonLd["@type"]).toBe("RealEstateListing");
     expect(jsonLd.name).toBe("2nd Floor Portion");
     expect(jsonLd.url).toBe(`${SITE_URL}/properties/x`);
     expect(jsonLd.image).toBe("https://cdn.example/1.jpg");
