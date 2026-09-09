@@ -1,12 +1,48 @@
 # F.F Real Estate Builder & Developers — Website
 
-Marketing and lead-generation website for F.F Real Estate Builder & Developers
-(buying, selling, renting, renovation and property documentation in F.B Area,
-Dastagir and across Karachi).
+Marketing and lead-generation website for F.F Real Estate Builder & Developers —
+a Karachi property firm handling buying, selling, renting, renovation and
+documentation in F.B Area, Dastagir Society and the surrounding neighbourhoods.
+
+**Live:** https://ff-real-estate-website.vercel.app
+
+![F.F Real Estate — home](docs/screenshots/ff-01-home-hero.png)
+
+## What it does
+
+- **Turns searches into conversations.** Every page routes the visitor to the
+  same two actions — message on WhatsApp or call — with a lead form on the home
+  page that emails the agents and records the enquiry.
+- **A filterable property listing** — browse by purpose (buy/rent), type,
+  location, bedrooms, price and size, with a dedicated page per property.
+- **Full service and company pages** — buying, selling, rentals, renovation,
+  documentation and consultation, plus about, "why F.F", projects and a gallery.
+- **Client-editable** — an embedded Sanity Studio at `/studio` lets F.F add
+  properties, projects and photos with no code and no separate login system.
+- **Built for Google** — per-page metadata, Open Graph, and JSON-LD structured
+  data for the business and each listing.
+- **Fast and responsive** — server-rendered, image-optimised, and designed
+  mobile-first with a sticky call/WhatsApp bar on phones.
+
+## Screenshots
+
+| Property listing | Property services |
+| --- | --- |
+| ![Properties](docs/screenshots/ff-02-properties.png) | ![Services](docs/screenshots/ff-03-services.png) |
+
+| About | Why F.F |
+| --- | --- |
+| ![About](docs/screenshots/ff-04-about.png) | ![Why F.F](docs/screenshots/ff-05-why-ff.png) |
+
+| Contact | Mobile |
+| --- | --- |
+| ![Contact](docs/screenshots/ff-06-contact.png) | <img src="docs/screenshots/ff-07-mobile-home.png" width="240" alt="Mobile view"> |
+
+## Tech
 
 Built with **Next.js 15 (App Router)** and an **embedded Sanity CMS** (Sanity
 Studio mounted at `/studio` inside the same app), styled with Tailwind CSS v3,
-tested with Vitest.
+tested with Vitest, deployed on Vercel.
 
 > **Going live or handing this to the client? Read [`SETUP.md`](SETUP.md).**
 > It covers the Sanity project, Vercel deploy, Gmail for lead emails, and a
